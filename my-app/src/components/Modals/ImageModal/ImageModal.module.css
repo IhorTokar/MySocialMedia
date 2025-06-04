@@ -1,0 +1,112 @@
+/* my-app/src/components/Modals/ImageModal/ImageModal.module.css */
+.imageModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9); /* Трохи темніший фон */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1080;
+  padding: 10px; /* Менший падінг, щоб зображення було ближче до країв */
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.imageModalContentWrapper {
+  position: relative;
+  display: flex; /* Встановлено бібліотекою */
+  /* justify-content: center; */ /* Встановлено бібліотекою */
+  /* align-items: center; */ /* Встановлено бібліотекою */
+  width: 95vw;  /* Збільшено ширину для більшого зображення */
+  height: 95vh; /* Збільшено висоту */
+  max-width: 1200px; /* Максимальна ширина, якщо екран дуже великий */
+  max-height: 800px; /* Максимальна висота */
+  cursor: default;
+  animation: fadeInScale 0.3s ease-out;
+  background-color: #111; /* Темний фон для самого контейнера, щоб було видно межі зуму */
+  border-radius: 4px; /* Невелике заокруглення для контейнера */
+  overflow: hidden; /* Важливо для роботи limitToBounds */
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.fullImage {
+  display: block;
+  /* Ширина та висота тепер контролюються TransformComponent */
+  /* max-width: 100%; */
+  /* max-height: 100%; */
+  object-fit: contain;
+  /* border-radius: 8px; */ /* Заокруглення тепер на .imageModalContentWrapper */
+  /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); */ /* Тінь тепер на .imageModalContentWrapper */
+  cursor: grab; /* Змінюємо курсор при можливості перетягування */
+}
+.fullImage:active {
+  cursor: grabbing; /* Курсор при перетягуванні */
+}
+
+
+.closeButton {
+  position: absolute;
+  top: 10px; /* Ближче до кута */
+  right: 10px; /* Ближче до кута */
+  background: rgba(30, 30, 30, 0.6); /* Фон для кращої видимості */
+  border: none;
+  font-size: 24px; /* Трохи менше */
+  color: #fff;
+  cursor: pointer;
+  padding: 8px;
+  line-height: 1;
+  border-radius: 50%;
+  transition: color 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+  z-index: 10; /* Має бути поверх TransformComponent */
+}
+.closeButton:hover {
+  color: #f0f0f0;
+  background-color: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+/* Стилі для контролів зуму */
+.zoomControls {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(30, 30, 30, 0.7);
+  padding: 8px 10px;
+  border-radius: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 10; /* Має бути поверх TransformComponent */
+}
+
+.controlButton {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.controlButton:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #f0f0f0;
+}
+.controlButton:disabled {
+    color: #777;
+    cursor: not-allowed;
+}
+.controlButton:disabled:hover {
+    background-color: transparent;
+}

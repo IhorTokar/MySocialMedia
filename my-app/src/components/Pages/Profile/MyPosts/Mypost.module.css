@@ -1,0 +1,122 @@
+/* my-app/src/components/Pages/Profile/MyPosts/Mypost.module.css */
+
+.postBlock { 
+  background-color: var(--secondary-background-color);
+  border-radius: 12px;
+  padding: 20px; 
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border-color);
+  font-family: sans-serif;
+  
+  margin-left: 20px;   /* Відступ зліва для вирівнювання ширини */
+  margin-right: 20px;  /* Відступ справа для вирівнювання ширини */
+  margin-bottom: 20px; /* Загальний нижній відступ для всього блоку */
+  width: auto; /* Дозволяє margin працювати */
+  box-sizing: border-box;
+}
+  
+.postBlock h3 { 
+  margin-top: 0;
+  margin-bottom: 20px; 
+  font-size: 18px;
+  color: var(--primary-text-color);
+  font-weight: 800;
+  padding-bottom: 10px; 
+  border-bottom: 1px solid var(--card-border-color);
+}
+  
+.createPostForm {
+  margin-bottom: 25px; 
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--card-border-color);
+}
+.createPostForm:last-child { 
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.input, 
+.textarea { 
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 15px; 
+  border: 1px solid var(--input-border-color);
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: sans-serif;
+  font-weight: 100;
+  background-color: var(--input-background-color);
+  color: var(--primary-text-color);
+  box-sizing: border-box; 
+}
+  
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  background-color: var(--secondary-background-color);
+  box-shadow: 0 0 0 2px var(--theme-button-active-shadow);
+}
+  
+.button { 
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-text);
+  border: none;
+  padding: 10px 20px; 
+  border-radius: 25px; 
+  font-weight: 800;
+  cursor: pointer;
+  font-size: 15px; 
+  font-family: sans-serif;
+  transition: background-color 0.2s ease;
+}
+  
+.button:hover:not(:disabled) {
+  background-color: var(--button-primary-hover-bg);
+}
+.button:disabled {
+  background-color: var(--secondary-text-color);
+  color: var(--primary-background-color); 
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+  
+.fileInput { 
+  font-family: sans-serif;
+  font-size: 14px;
+  color: var(--secondary-text-color);
+  margin-bottom: 15px; 
+}
+
+.posts { 
+  margin-top: 20px; 
+}
+/* Якщо .createPostForm немає, то .posts не потребує margin-top, 
+   бо заголовок .postBlock h3 вже має margin-bottom */
+.createPostForm + .posts {
+    margin-top: 20px;
+}
+/* Якщо createPostForm немає, а є тільки заголовок h3 і потім .posts */
+.postBlock h3 + .posts:not(.createPostForm + .posts) {
+    margin-top: 0;
+}
+
+
+.error { 
+  color: var(--error-text-color);
+  background-color: var(--error-bg-color);
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 15px; 
+  font-size: 14px;
+  border: 1px solid var(--error-border-color);
+}
+
+.noPostsMessage {
+    padding: 20px;
+    text-align: center;
+    color: var(--secondary-text-color);
+    font-size: 16px;
+    font-weight: 100;
+}

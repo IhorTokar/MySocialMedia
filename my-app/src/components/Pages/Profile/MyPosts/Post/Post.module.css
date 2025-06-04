@@ -1,0 +1,417 @@
+/* my-app/src/components/Pages/Profile/MyPosts/Post/Post.module.css */
+.postCard {
+  background: var(--secondary-background-color);
+  padding: 16px;
+  margin-bottom: var(--post-gap, 15px); 
+  border-radius: 12px; 
+  border: 1px solid var(--card-border-color); 
+  box-shadow: var(--card-shadow); 
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.postCard:hover {
+  box-shadow: var(--card-shadow-hover); 
+}
+
+.postHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.authorInfo { 
+  display: flex; 
+  align-items: flex-start; 
+  gap: 12px; 
+}
+
+.avatarLink { 
+  display: block; 
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: var(--input-background-color); 
+}
+
+.nameAndDate { 
+  display: flex; 
+  align-items: center; 
+  flex-wrap: wrap; 
+  gap: 5px; 
+  padding-top: 2px; 
+  line-height: 1.2; 
+}
+
+.authorNames { 
+  display: flex; 
+  align-items: baseline; 
+  gap: 5px; 
+  flex-wrap: wrap; 
+}
+
+.displayName { /* Ім'я користувача - контент */
+  font-family: var(--content-font-family); 
+  font-weight: 600; /* Трохи жирніше для імені */
+  font-size: 16px;
+  color: var(--primary-text-color);
+  text-decoration: none;
+  word-break: break-all;
+}
+.usernameLink:hover .displayName { 
+  text-decoration: underline; 
+}
+
+.userHandle { /* @username - контент */
+  font-family: var(--content-font-family); 
+  font-weight: 400; /* Стандартний для контенту */
+  font-size: 15px;
+  color: var(--secondary-text-color);
+  word-break: break-all;
+}
+
+.dotSeparator { 
+  font-family: var(--namu-font-family); /* Елемент UI */
+  color: var(--secondary-text-color); 
+  margin: 0 2px; 
+  font-size: 15px; 
+  line-height: 1; 
+}
+
+.date { /* Дата - елемент UI */
+  font-family: var(--namu-font-family); 
+  font-weight: 100;
+  font-size: 15px;
+  color: var(--secondary-text-color);
+  white-space: nowrap;
+}
+
+.moreOptionsButton { /* Кнопка - UI */
+  font-family: var(--namu-font-family);
+  background: none; 
+  border: none;
+  color: var(--secondary-text-color);
+  cursor: pointer; 
+  font-size: 18px; 
+  padding: 8px; 
+  border-radius: 50%;
+  margin-left: auto; 
+  align-self: center; 
+  line-height: 1; 
+}
+.moreOptionsButton:hover {
+  background-color: var(--theme-button-hover-bg);
+  color: var(--accent-color);
+}
+
+.postContent {
+  margin-top: 8px; 
+}
+
+.postText {  /* Текст поста - контент */
+  font-family: var(--content-font-family);
+  font-weight: 400; /* Стандартний для контенту */
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--primary-text-color);
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  margin: 0 0 12px 0; 
+}
+.postText:last-child { 
+  margin-bottom: 0; 
+}
+
+.postImageContainer { 
+  margin-top: 12px; 
+}
+
+.postImage {
+  width: 100%; 
+  max-height: 600px; 
+  object-fit: cover;
+  border-radius: 12px; 
+  border: 1px solid var(--card-border-color);
+  background-color: var(--primary-background-color);
+}
+
+.postTitle {
+  font-family: var(--content-font-family); /* Або var(--namu-font-family) для більш виразного заголовка */
+  font-size: 18px; /* Або більший розмір, наприклад, 20px */
+  font-weight: 700; /* Жирний шрифт для заголовка */
+  color: var(--primary-text-color);
+  margin: 0 0 8px 0; /* Відступи для заголовка */
+  line-height: 1.4;
+  word-wrap: break-word; /* Перенос довгих слів */
+}
+
+.postActions {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-top: 15px; 
+  padding-top: 12px; 
+  border-top: 1px solid var(--card-border-color); 
+}
+
+.actionButton { /* Кнопки дій - UI, включаючи текст лічильників */
+  font-family: var(--namu-font-family);
+  background: none; 
+  border: none; 
+  color: var(--secondary-text-color);
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  gap: 6px; 
+  font-weight: 100; 
+  font-size: 13px; 
+  padding: 8px; 
+  border-radius: 25px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  line-height: 1; 
+}
+.actionButton svg { 
+  font-size: 18px; 
+}
+.actionButton:hover { 
+  background-color: var(--theme-button-hover-bg); 
+}
+/* ... стилі для конкретних кнопок дій (лайк, коментар, поділитися, зберегти) ... */
+.actionButton.liked svg, .actionButton:nth-child(1):hover svg { color: #F91880; }
+.actionButton:nth-child(1):hover { color: #F91880; background-color: rgba(249, 24, 128, 0.1); }
+.actionButton:nth-child(2):hover, .actionButton:nth-child(2):hover svg { color: var(--accent-color); }
+.actionButton:nth-child(3):hover, .actionButton:nth-child(3):hover svg { color: #00BA7C; }
+.actionButton:nth-child(3):hover { background-color: rgba(0, 186, 124, 0.1); }
+.actionButton.saved svg, .actionButton:nth-child(4):hover svg { color: var(--accent-color); }
+
+.actionButton span { /* Лічильники на кнопках - частина UI */
+  color: var(--secondary-text-color); 
+  /* font-family успадковується від .actionButton (NAMU) */
+}
+.actionButton.liked span, .actionButton.saved span { color: inherit; }
+
+
+/* Секція коментарів */
+.commentsSection {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid var(--card-border-color);
+}
+
+.addCommentForm {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start; 
+  margin-bottom: 15px;
+}
+
+.commentFormAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  margin-top: 2px; 
+}
+
+.commentTextarea { /* Текст, що вводиться в коментар - контент */
+  font-family: var(--content-font-family);
+  font-weight: 400;
+  flex-grow: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--input-border-color);
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: var(--input-background-color);
+  color: var(--primary-text-color);
+  box-sizing: border-box;
+  resize: vertical; 
+  min-height: 40px; 
+  line-height: 1.4;
+}
+.commentTextarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  background-color: var(--secondary-background-color);
+  box-shadow: 0 0 0 2px var(--theme-button-active-shadow);
+}
+
+.commentSubmitButton { /* Кнопка "Надіслати" - UI */
+  font-family: var(--namu-font-family);
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  align-self: flex-end; 
+  transition: background-color 0.2s ease;
+}
+.commentSubmitButton:hover:not(:disabled) { background-color: var(--accent-color-hover); }
+.commentSubmitButton:disabled { background-color: var(--secondary-text-color); opacity: 0.7; cursor: not-allowed; }
+
+.commentError { /* Текст помилки - системне повідомлення */
+  font-family: var(--content-font-family);
+  color: var(--error-text-color);
+  font-size: 13px;
+  margin-top: -10px; 
+  margin-bottom: 10px;
+}
+
+.commentsList { margin-top: 10px; }
+
+.noComments, .loadingMessage { /* Системні повідомлення */
+  font-family: var(--content-font-family);
+  padding: 10px 0;
+  text-align: center;
+  color: var(--secondary-text-color);
+  font-size: 14px;
+}
+.error { /* Загальний клас для помилок */
+  font-family: var(--content-font-family);
+  color: var(--error-text-color);
+  background-color: var(--error-bg-color);
+  border: 1px solid var(--error-border-color);
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.likeErrorText { /* Текст помилки лайка */
+    font-family: var(--content-font-family);
+    color: var(--error-text-color);
+    font-size: 12px;
+    margin-top: 8px;
+    margin-bottom: -4px;
+    text-align: center;
+}
+
+/* my-app/src/components/Pages/Profile/MyPosts/Post/Post.module.css */
+/* ... (ваші існуючі стилі для .postCard, .postHeader, etc.) ... */
+
+.postMenuWrapper {
+  position: relative; /* Для позиціонування випадаючого меню */
+  margin-left: auto; /* Щоб кнопка була справа, якщо вона не остання в .postHeader */
+  align-self: flex-start; /* Або center, залежно від вашого дизайну */
+}
+
+.moreOptionsButton {
+  background: none;
+  border: none;
+  color: var(--secondary-text-color);
+  cursor: pointer;
+  font-size: 18px; /* Розмір іконки "три крапки" */
+  padding: 8px;
+  border-radius: 50%;
+  line-height: 1;
+  display: flex; /* Для кращого центрування іконки, якщо потрібно */
+  align-items: center;
+  justify-content: center;
+}
+.moreOptionsButton:hover {
+  background-color: var(--theme-button-hover-bg);
+  color: var(--primary-text-color); /* Або var(--accent-color) */
+}
+
+/* Стиль для іконки, коли адмін керує чужим постом */
+.adminActionIcon {
+  color: var(--error-text-color); /* Наприклад, червоний колір для адмінських дій */
+}
+.adminActionIcon:hover {
+  color: white;
+  background-color: var(--error-text-color); /* Червоний фон при наведенні */
+}
+
+
+.postDropdownMenu {
+  position: absolute;
+  top: 100%; /* З'являється під кнопкою */
+  right: 0;
+  background-color: var(--secondary-background-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  z-index: 10; /* Має бути вище за контент поста */
+  width: 180px; /* Або інша ширина */
+  border: 1px solid var(--card-border-color);
+  overflow: hidden; /* Щоб border-radius працював для дочірніх елементів */
+}
+
+/* Стиль для випадаючого меню, коли адмін керує чужим постом */
+.adminDropdown {
+  border-color: var(--error-text-color); /* Червона рамка для адмінського меню */
+}
+
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  width: 100%;
+  padding: 10px 15px;
+  text-align: left;
+  font-family: var(--namu-font-family);
+  font-size: 15px;
+  font-weight: 100;
+  color: var(--primary-text-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dropdownItem svg {
+  font-size: 16px;
+  margin-right: 5px; /* Для відступу іконки від тексту */
+  color: var(--secondary-text-color); /* Колір іконок в меню */
+}
+
+.dropdownItem:hover {
+  background-color: var(--primary-background-color);
+}
+
+.dropdownItem.deleteItem {
+  color: var(--error-text-color); /* Червоний текст для кнопки "Видалити" */
+}
+.dropdownItem.deleteItem svg {
+  color: var(--error-text-color);
+}
+.dropdownItem.deleteItem:hover {
+  background-color: var(--error-bg-color); /* Світло-червоний фон при наведенні */
+}
+
+.errorText { /* Для відображення помилок, наприклад, при видаленні */
+  font-family: var(--content-font-family);
+  color: var(--error-text-color);
+  font-size: 13px;
+  margin-top: 8px;
+  text-align: right; /* Або center */
+}
+.loadingMessage { /* Для відображення стану завантаження */
+    font-family: var(--content-font-family);
+    color: var(--secondary-text-color);
+    font-size: 13px;
+    margin-top: 8px;
+    text-align: right; /* Або center */
+}
+
+
+.postText {
+  font-family: var(--content-font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--primary-text-color);
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  margin: 0 0 12px 0;
+}
+.postText:last-child {
+  margin-bottom: 0;
+}

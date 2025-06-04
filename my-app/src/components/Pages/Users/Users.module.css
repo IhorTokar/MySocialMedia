@@ -1,0 +1,212 @@
+/* my-app/src/components/Pages/Users/Users.module.css */
+
+/* Загальний контейнер для сторінки користувачів (якщо потрібно, але може бути в UsersContainer.module.css) */
+/* .usersPageContainer {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: var(--namu-font-family, 'NAMU', sans-serif);
+} */
+
+/* Контейнер для основного контенту всередині Users.jsx */
+.usersPageContent {
+  /* Тут можуть бути специфічні стилі для контенту, якщо Users.jsx має власну обгортку */
+}
+
+/* Стилі для вкладок на сторінці користувачів */
+.tabsHeaderUsers {
+  display: flex;
+  margin-bottom: 25px; /* Відступ від вкладок до списку користувачів */
+  border-bottom: 1px solid var(--card-border-color);
+}
+
+.tabButtonUsers {
+  padding: 12px 20px; /* Внутрішні відступи для кнопок-вкладок */
+  font-family: sans-serif;
+  font-size: 16px;   /* Розмір шрифту для вкладок */
+  font-weight: 600;  /* Зробимо трохи жирнішим */
+  border: none;      /* Прибираємо стандартну рамку кнопки */
+  border-bottom: 3px solid transparent; /* Прозора рамка для неактивних, збільшена товщина */
+  background-color: transparent; /* Прозорий фон */
+  color: var(--secondary-text-color); /* Колір тексту для неактивної вкладки */
+  cursor: pointer;
+  margin-right: 15px; /* Відстань між вкладками */
+  margin-bottom: -1px; /* Щоб активна рамка "зливалася" з нижньою рамкою .tabsContainer */
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.tabButtonUsers:hover:not(:disabled) {
+  color: var(--primary-text-color); /* Колір тексту при наведенні */
+}
+
+.tabButtonUsers.activeTabUsers {
+  color: var(--accent-color); /* Колір тексту для активної вкладки */
+  border-bottom-color: var(--accent-color); /* Кольорове підкреслення для активної */
+  font-weight: 700; /* Активна вкладка ще жирніша */
+}
+
+.tabButtonUsers:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Заголовок сторінки, якщо використовується (можливо, вже є схожий) */
+.pageTitle {
+  font-size: 22px; /* Трохи менше, якщо є вкладки */
+  font-weight: 700;
+  color: var(--primary-text-color);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.usersList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Відстань між картками користувачів */
+}
+
+.userItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: var(--secondary-background-color);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border-color);
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+.userItem:hover {
+  box-shadow: var(--card-shadow-hover);
+  background-color: var(--hover-bg-color, var(--primary-background-color));
+}
+
+.userLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.userAvatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: var(--input-background-color);
+  border: 1px solid var(--card-border-color);
+  flex-shrink: 0;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.userName {
+  font-family: var(--content-font-family);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--primary-text-color);
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.userLink:hover .userName {
+  text-decoration: underline;
+}
+
+.userHandle {
+  font-family: var(--content-font-family);
+  font-size: 14px;
+  color: var(--secondary-text-color);
+  font-weight: 400;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.followButton {
+  padding: 7px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+  min-width: 110px;
+  text-align: center;
+  border: 1px solid transparent;
+  margin-left: 15px;
+  flex-shrink: 0;
+}
+
+.followButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.followButton:not(.unfollowActive) {
+  background-color: var(--accent-color);
+  color: var(--button-primary-text, white);
+  border-color: var(--accent-color);
+}
+.followButton:not(.unfollowActive):not(:disabled):hover {
+  background-color: var(--accent-color-hover);
+  border-color: var(--accent-color-hover);
+}
+
+.followButton.unfollowActive {
+  background-color: var(--secondary-background-color);
+  color: var(--primary-text-color);
+  border: 1px solid var(--card-border-color);
+}
+.followButton.unfollowActive:not(:disabled):hover {
+  background-color: var(--theme-button-hover-bg);
+  border-color: var(--secondary-text-color);
+  color: var(--accent-color);
+}
+
+.loadingMessage,
+.noUsersMessage,
+.endOfListMessage {
+  padding: 20px;
+  text-align: center;
+  color: var(--secondary-text-color);
+  font-family: var(--content-font-family);
+  font-size: 16px;
+}
+
+.loadingMore,
+.errorLoadingMoreUsers {
+  padding: 20px;
+  text-align: center;
+  color: var(--secondary-text-color);
+  font-family: var(--content-font-family);
+  font-size: 14px;
+}
+.errorLoadingMoreUsers {
+    color: var(--error-text-color);
+}
+
+.errorMessage {
+  padding: 15px;
+  text-align: center;
+  color: var(--error-text-color);
+  background-color: var(--error-bg-color);
+  border: 1px solid var(--error-border-color);
+  border-radius: 8px;
+  font-family: var(--content-font-family);
+  font-size: 15px;
+  margin: 10px 0;
+}

@@ -1,0 +1,455 @@
+/* my-app/src/components/Pages/Settings_page/Settings_page.module.css */
+.settingsContainer {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 25px 30px;
+  background-color: var(--secondary-background-color);
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  font-family: sans-serif;
+  color: var(--primary-text-color);
+}
+
+.settingsContainer h1 {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--primary-text-color);
+  margin-top: 0; /* Додано, щоб прибрати верхній відступ */
+  margin-bottom: 25px;
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--card-border-color);
+}
+
+.settingsSection {
+  margin-bottom: 35px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid var(--card-border-color);
+}
+.settingsSection:last-child {
+  margin-bottom: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.settingsSection h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--primary-text-color);
+  margin-top: 0; /* Додано */
+  margin-bottom: 20px;
+}
+
+.settingsForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formGroup label {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--secondary-text-color);
+}
+
+.formInput,
+.formTextarea,
+.formSelect {
+  width: 100%; /* Забезпечує однакову ширину в межах батьківського контейнера */
+  padding: 12px 15px;
+  border: 1px solid var(--input-border-color);
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: var(--content-font-family); /* Системний шрифт для вводу */
+  font-weight: 400;
+  background-color: var(--input-background-color);
+  color: var(--primary-text-color);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.formInput:focus,
+.formTextarea:focus,
+.formSelect:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  background-color: var(--secondary-background-color);
+  box-shadow: 0 0 0 3px var(--theme-button-active-shadow);
+}
+
+.formTextarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.submitButton {
+  padding: 12px 24px;
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-text);
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 800; /* NAMU */
+  font-size: 15px;
+  font-family: sans-serif;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+  align-self: flex-start; /* Кнопка не розтягується на всю ширину */
+  margin-top: 10px; /* Невеликий відступ зверху */
+}
+.submitButton:disabled {
+  background-color: var(--secondary-text-color);
+  color: var(--primary-background-color); /* Змінено для кращого контрасту при disabled */
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.submitButton:hover:not(:disabled) {
+  background-color: var(--button-primary-hover-bg);
+}
+
+.statusMessage,
+.successStatus,
+.errorStatus {
+  margin-top: 12px;
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-size: 14px;
+  text-align: left;
+  font-weight: 100; /* NAMU */
+  font-family: sans-serif;
+  border: 1px solid transparent;
+}
+.successStatus {
+  background-color: var(--success-bg-color);
+  color: var(--success-text-color);
+  border-color: var(--success-border-color);
+}
+.errorStatus {
+  background-color: var(--error-bg-color);
+  color: var(--error-text-color);
+  border-color: var(--error-border-color);
+}
+
+/* --- СТИЛІ ДЛЯ ЗМІНИ АВАТАРА --- */
+.avatarChangeSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  border: 1px dashed var(--input-border-color);
+  border-radius: 8px;
+  background-color: var(--primary-background-color);
+  margin-bottom: 20px;
+}
+
+.currentAvatarPreview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--card-border-color);
+  background-color: var(--input-background-color);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.avatarFileInput {
+  display: none;
+}
+
+.avatarUploadButton {
+  font-family: var(--namu-font-family);
+  padding: 10px 25px;
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+  border: 1px solid var(--button-secondary-border);
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600; /* NAMU */
+  font-size: 15px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.avatarUploadButton:hover {
+  background-color: var(--button-secondary-hover-bg);
+}
+.avatarUploadButton:active {
+  transform: translateY(1px);
+}
+
+.fileName {
+  font-size: 14px;
+  color: var(--secondary-text-color);
+  font-family: var(--content-font-family);
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 5px;
+  background-color: var(--input-background-color);
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+/* --- СТИЛІ ДЛЯ ВИБОРУ ТЕМИ --- */
+.themeOptionsContainer {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  flex-wrap: wrap; /* Дозволяє кнопкам переноситися, якщо не вміщаються */
+}
+
+.themeButton {
+  padding: 10px 20px;
+  border: 1px solid var(--card-border-color);
+  border-radius: 25px;
+  background-color: var(--secondary-background-color);
+  color: var(--primary-text-color);
+  cursor: pointer;
+  font-family: sans-serif;
+  font-weight: 600; /* NAMU */
+  font-size: 15px;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.themeButton:hover {
+  border-color: var(--accent-color);
+  background-color: var(--theme-button-hover-bg); /* Використовуємо змінну */
+}
+
+.themeButton.activeTheme {
+  background-color: var(--accent-color);
+  color: var(--button-primary-text); /* Зазвичай білий для контрасту з accent-color */
+  border-color: var(--accent-color);
+  box-shadow: 0 2px 8px var(--theme-button-active-shadow); /* Використовуємо змінну */
+}
+
+
+/* --- СТИЛІ ДЛЯ АДМІН-ПАНЕЛІ --- */
+.adminPanel {
+  border-top: 2px solid var(--accent-color);
+  margin-top: 30px;
+  padding-top: 25px;
+}
+
+.adminPanel > h2 { /* Більш специфічний селектор для заголовка адмін-панелі */
+  color: var(--accent-color);
+}
+
+.adminSubSection {
+  margin-bottom: 25px;
+  padding: 20px; /* Збільшено падінг */
+  border: 1px solid var(--card-border-color);
+  border-radius: 12px; /* Збільшено радіус */
+  background-color: var(--primary-background-color); /* Легкий фон для підсекцій */
+}
+.adminSubSection:last-of-type {
+    margin-bottom: 0;
+}
+
+.adminSubSection h3 {
+  font-size: 18px;
+  font-weight: 600; /* NAMU */
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: var(--primary-text-color);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--card-border-color);
+}
+
+.adminSearchForm {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  align-items: flex-end; /* Вирівнюємо кнопку та інпут по низу */
+}
+
+.adminSearchForm .formInput { /* Використовуємо існуючий клас для інпутів */
+  flex-grow: 1; /* Інпут займає доступний простір */
+  margin-bottom: 0; /* Прибираємо стандартний відступ інпута */
+}
+
+.submitButtonSmall {
+  composes: submitButton; /* Успадковуємо стилі від .submitButton */
+  padding: 10px 18px; /* Менші падінги */
+  font-size: 14px;
+  align-self: flex-end; /* Вирівнюємо по низу, якщо .adminSearchForm має align-items: flex-end */
+  margin-top: 0; /* Прибираємо стандартний відступ */
+}
+
+.adminUserInfo {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: var(--secondary-background-color); /* Фон для блоку інформації */
+  border-radius: 8px;
+  border: 1px solid var(--card-border-color);
+}
+
+.adminUserInfo h4 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 17px;
+  font-weight: 800; /* NAMU */
+  color: var(--primary-text-color);
+}
+
+.adminUserInfo p {
+  margin: 6px 0;
+  font-size: 15px;
+  font-weight: 100; /* NAMU */
+  line-height: 1.5;
+  font-family: var(--content-font-family); /* Системний шрифт для даних */
+  color: var(--primary-text-color);
+}
+.adminUserInfo p strong {
+  font-weight: 600; /* NAMU */
+  color: var(--secondary-text-color);
+  font-family: var(--namu-font-family);
+}
+
+.adminRoleEditor {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px dashed var(--card-border-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.adminRoleEditor label {
+  font-weight: 600; /* NAMU */
+  font-size: 14px;
+  color: var(--secondary-text-color);
+  margin-right: 5px;
+  font-family: var(--namu-font-family);
+}
+
+.adminRoleEditor .formSelect { /* Використовуємо існуючий клас для селектів */
+  min-width: 150px;
+  margin-bottom: 0; /* Прибираємо стандартний відступ селекта */
+}
+
+.adminRoleEditor .submitButtonSmall {
+  margin-top: 0;
+}
+
+.deleteButton { /* Загальний стиль для великих кнопок видалення */
+  composes: submitButton; /* Успадковуємо */
+  background-color: var(--error-text-color) !important; /* Важливо, щоб перекрити */
+  color: var(--secondary-background-color) !important; /* Або var(--button-primary-text) */
+  border-color: var(--error-text-color) !important;
+}
+.deleteButton:hover:not(:disabled) {
+  background-color: #b0261e !important; /* Темніший червоний */
+  border-color: #b0261e !important;
+}
+
+.actionButtonSmall {
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 20px;
+  border: 1px solid var(--input-border-color); /* Змінено на input-border-color */
+  background-color: var(--primary-background-color);
+  color: var(--primary-text-color);
+  cursor: pointer;
+  font-family: var(--namu-font-family);
+  font-weight: 600; /* NAMU */
+  transition: background-color 0.2s ease;
+  margin-left: 5px;
+}
+.actionButtonSmall:hover {
+  background-color: var(--card-border-color); /* Трохи темніший фон */
+}
+
+.deleteButtonSmall {
+  composes: actionButtonSmall;
+  background-color: var(--error-bg-color);
+  color: var(--error-text-color);
+  border-color: var(--error-border-color);
+}
+.deleteButtonSmall:hover:not(:disabled) {
+  background-color: var(--error-border-color);
+  color: #a71d1d; /* Темніший червоний для тексту */
+}
+
+.loadingMessage, /* Залишаємо для загальних повідомлень про завантаження, якщо використовуються */
+.adminLoadingMessage { /* Можна використовувати цей специфічний клас для адмінки */
+  padding: 10px;
+  text-align: center;
+  color: var(--secondary-text-color);
+  font-family: var(--content-font-family);
+  font-size: 14px;
+}
+
+.adminUserList {
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+  max-height: 300px; /* Обмеження висоти для списку */
+  overflow-y: auto;  /* Додаємо скрол */
+}
+
+.adminUserListItem {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--card-border-color);
+  border-radius: 8px; /* Збільшено радіус */
+  margin-bottom: 10px;
+  background-color: var(--secondary-background-color);
+  justify-content: space-between; /* Розносимо елементи по краях */
+  gap: 10px; /* Проміжок між елементами */
+}
+.adminUserListItem:last-child {
+    margin-bottom: 0;
+}
+
+.adminUserListAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  object-fit: cover;
+  flex-shrink: 0; /* Щоб аватар не стискався */
+}
+
+.adminUserListItem > div:first-of-type { /* Блок з ім'ям та хендлом */
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.adminUserListName {
+  font-weight: 800; /* NAMU */
+  font-size: 15px;
+  display: block;
+  color: var(--primary-text-color);
+  font-family: var(--namu-font-family);
+}
+
+.adminUserListHandle {
+  font-size: 13px;
+  color: var(--secondary-text-color);
+  font-weight: 100; /* NAMU */
+  display: block;
+  font-family: var(--namu-font-family);
+}
+
+.adminUserListActions {
+  margin-left: auto; /* Притискає до правого краю, якщо потрібно */
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0; /* Щоб кнопки не стискалися */
+}
+
+.hintText {
+  font-size: 12px;
+  color: var(--secondary-text-color);
+  text-align: center;
+  margin-top: 5px;
+}

@@ -1,0 +1,45 @@
+/* my-app/src/pages/SavedPostsPage.module.css */
+.container {
+  max-width: 800px; /* Або як ваша основна контентна зона, наприклад, 700px */
+  margin: 20px auto;
+  padding: 20px;
+  font-family: sans-serif;
+  background-color: var(--primary-background-color); /* Використовуємо основний фон сторінки */
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--primary-text-color);
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--card-border-color);
+  text-align: center;
+}
+
+.postsGrid { 
+  display: flex;
+  flex-direction: column;
+  gap: var(--post-gap, 15px); /* Використовуємо змінну, визначену в App.css */
+}
+
+.loadingMessage, 
+.emptyMessage {
+  text-align: center;
+  padding: 30px 20px; /* Більший відступ для таких повідомлень */
+  color: var(--secondary-text-color);
+  font-family: var(--content-font-family); /* Системний шрифт для повідомлень */
+  font-size: 16px;
+  font-weight: 400;
+  background-color: var(--secondary-background-color); /* Фон картки */
+  border-radius: 12px;
+  border: 1px solid var(--card-border-color);
+  box-shadow: var(--card-shadow);
+}
+
+.error {
+  composes: emptyMessage; /* Успадковуємо стилі від .emptyMessage */
+  color: var(--error-text-color);
+  background-color: var(--error-bg-color);
+  border: 1px solid var(--error-border-color);
+}

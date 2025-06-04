@@ -1,0 +1,143 @@
+/* my-app/src/components/NavBar/NavBar.module.css */
+.nav {
+  width: 280px; 
+  flex-shrink: 0;
+  background-color: var(--secondary-background-color);
+  padding: 20px 15px;
+  height: calc(100vh - var(--header-height, 60px));
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  box-sizing: border-box;
+  border-right: 1px solid var(--card-border-color);
+  font-family: sans-serif; 
+}
+
+.logoContainer {
+  padding: 10px 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.logoText {
+  font-weight: 800; 
+  font-size: 28px; 
+  color: var(--primary-text-color);
+}
+
+.navItemsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px; 
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 18px; 
+  padding: 12px 15px; 
+  text-decoration: none;
+  color: var(--primary-text-color);
+  border-radius: 25px; 
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.navLink:hover {
+  background-color: var(--primary-background-color); 
+  color: var(--primary-text-color);
+}
+
+.activeNavLink .navLabel { 
+  font-weight: 700; 
+}
+.activeNavLink .navIcon { 
+  /* filter: invert(20%) sepia(99%) saturate(2771%) hue-rotate(196deg) brightness(100%) contrast(90%); */
+}
+
+.navIcon {
+  width: 26px; 
+  height: 26px;
+  object-fit: contain; 
+}
+
+.navLabel {
+  font-style: normal;
+  font-weight: 100; 
+  font-size: 20px; 
+  line-height: 1.2; 
+  color: var(--primary-text-color);
+}
+
+.postButton {
+  width: 100%; 
+  max-width: 230px; 
+  height: 50px; 
+  background: var(--button-primary-bg); 
+  border-radius: 25px; 
+  border: none;
+  color: var(--button-primary-text); 
+  font-style: normal;
+  font-weight: 100; 
+  font-size: 18px; 
+  line-height: 1.2;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 15px; 
+  margin-bottom: 15px; 
+  align-self: stretch; 
+  transition: background-color 0.2s ease;
+}
+.postButton:hover {
+    background-color: var(--button-primary-hover-bg);
+}
+
+.postButtonIcon {
+    width: 20px;
+    height: 20px;
+    filter: invert(100%) brightness(200%); 
+}
+
+.postButtonText { /* Текст кнопки "Допис" - UI */
+   /* font-family успадковується */
+}
+
+.communitiesSection {
+  margin-top: auto; 
+  padding-top: 20px; 
+  border-top: 1px solid var(--card-border-color); 
+}
+
+.communitiesTitle { /* Заголовок "Спільноти" - UI */
+  font-style: normal;
+  font-weight: 800; 
+  font-size: 20px; 
+  line-height: 1.2;
+  color: var(--primary-text-color);
+  padding-left: 5px; 
+  margin-bottom: 10px;
+}
+
+.communityItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 5px;
+  border-radius: 6px;
+  font-size: 15px; /* Текст назви спільноти - може бути --content-font-family */
+  font-family: var(--content-font-family);
+  font-weight: 400;
+  color: var(--primary-text-color);
+}
+.communityItem:hover {
+  background-color: var(--primary-background-color);
+}
+.communityIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px; 
+  object-fit: cover;
+}

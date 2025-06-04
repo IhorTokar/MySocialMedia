@@ -1,0 +1,236 @@
+/* my-app/src/components/Pages/Main_page/Main_page.module.css */
+.mainPageWrapper {
+  padding: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: sans-serif; /* Загальний для UI */
+}
+
+.tabsHeader {
+  display: flex;
+  justify-content: space-around;
+  background-color: var(--secondary-background-color);
+  border-bottom: 1px solid var(--card-border-color);
+  position: sticky;
+  top: 0;
+  z-index: 10; 
+}
+
+.tabButton { /* Текст кнопок вкладок - UI */
+  flex: 1; 
+  padding: 16px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: sans-serif;
+  font-weight: 100; 
+  font-size: 18px; 
+  color: var(--secondary-text-color); 
+  position: relative;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.tabButton:hover {
+  background-color: var(--primary-background-color); 
+  color: var(--primary-text-color);
+}
+.activeTab {
+  font-weight: 800; 
+  color: var(--primary-text-color); 
+}
+.activeTab::after { 
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 56px; 
+  height: 4px; 
+  background-color: var(--accent-color); 
+  border-radius: 9999px; 
+}
+
+/* Загальний стиль для контентних блоків під вкладками */
+.contentBlock {
+  background-color: var(--secondary-background-color);
+  margin: 0 20px 1px 20px; 
+  border-left: 1px solid var(--card-border-color);
+  border-right: 1px solid var(--card-border-color);
+  border-bottom: 1px solid var(--card-border-color);
+}
+.contentBlock:first-of-type {
+  border-top: 1px solid var(--card-border-color);
+  border-radius: 12px 12px 0 0;
+  margin-top: 1px; 
+}
+.contentBlock:last-of-type {
+  border-radius: 0 0 12px 12px;
+  margin-bottom: 20px; 
+}
+.contentBlock.noBottomBorder {
+    border-bottom: none;
+    margin-bottom: 0;
+    border-radius: 0; 
+}
+.contentBlock.noBottomBorder:first-of-type {
+    border-radius: 12px 12px 0 0;
+}
+
+.momentsSection {
+  composes: contentBlock;
+  padding: 15px 0; 
+}
+.momentsTitle { /* Заголовок "Моменти" - UI */
+  font-family: sans-serif;
+  font-weight: 800; 
+  font-size: 20px; 
+  color: var(--primary-text-color); 
+  margin: 0 15px 15px 15px; 
+}
+.storiesContainer { 
+  display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; 
+  scrollbar-width: thin; 
+  scrollbar-color: var(--input-border-color) var(--secondary-background-color); 
+  padding-left: 15px; padding-right: 15px;
+}
+.storiesContainer::-webkit-scrollbar { height: 8px; }
+.storiesContainer::-webkit-scrollbar-track { background: var(--primary-background-color); border-radius: 4px; }
+.storiesContainer::-webkit-scrollbar-thumb { background-color: var(--input-border-color); border-radius: 4px; }
+.storiesContainer::-webkit-scrollbar-thumb:hover { background-color: var(--secondary-text-color); }
+.storyItem { display: flex; flex-direction: column; align-items: center; text-align: center; width: 80px; flex-shrink: 0; cursor: pointer; }
+.addStoryButton {
+  width: 65px; height: 65px; border-radius: 50%;
+  background-color: var(--input-background-color); 
+  border: 1px dashed var(--secondary-text-color); 
+  display: flex; justify-content: center; align-items: center;
+  cursor: pointer; transition: background-color 0.2s ease;
+  margin-bottom: 5px; padding: 0; 
+}
+.addStoryButton:hover { background-color: var(--card-border-color); }
+.addStoryIcon { width: 28px; height: 28px; color: var(--primary-text-color); }
+.storyCircleWrapper { 
+  width: 70px; height: 70px; border-radius: 50%;
+  display: flex; justify-content: center; align-items: center;
+  padding: 3px; box-sizing: border-box; margin-bottom: 5px; 
+  transition: transform 0.2s ease-in-out;
+}
+.storyItem:hover .storyCircleWrapper { transform: scale(1.05); }
+.activeStoryBorder { border: 3px solid var(--accent-color); }
+.inactiveStoryBorder { border: 3px solid var(--input-border-color); }
+.storyAvatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background-color: var(--secondary-text-color); }
+.storyName { /* Імена користувачів в історіях */
+  font-family: var(--content-font-family);
+  font-weight: 400;
+  font-size: 12px; 
+  color: var(--primary-text-color);
+  margin-top: 4px; width: 100%; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap;
+}
+
+.createPostContainer {
+  composes: contentBlock;
+  border-radius: 0; 
+  border-bottom: none; 
+  margin-bottom: 0;
+  padding: 0;
+}
+.createPostTrigger {
+  display: flex; align-items: flex-start; 
+  padding: 12px 15px; cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-top: none; border-left: none; border-right: none; border-bottom: none;
+}
+.createPostTrigger:not(.expandedTrigger) {
+    border-bottom: 1px solid var(--card-border-color); 
+    border-radius: 0 0 12px 12px; /* Якщо createPostContainer не має нижньої рамки і це останній елемент */
+    /* Якщо createPostContainer є .contentBlock, то він вже має нижню рамку, якщо не .noBottomBorder */
+}
+.createPostTrigger.expandedTrigger { border-bottom: 1px dashed var(--input-border-color); }
+.createPostTrigger:not(.expandedTrigger):hover { background-color: var(--primary-background-color); }
+.createPostAvatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 12px; margin-top: 2px; }
+.createPostInputPlaceholder { /* Плейсхолдер */
+  font-family: var(--content-font-family);
+  font-weight: 400;
+  flex-grow: 1; font-size: 20px; color: var(--input-placeholder-color); 
+  line-height: 1.4; padding-top: 8px; 
+}
+.createPostActions { display: flex; align-items: center; gap: 10px; margin-left: auto; padding-top: 4px; }
+.createPostActionButton { /* Текст "Image" - UI */
+  font-family: sans-serif;
+  display: flex; align-items: center; gap: 6px; padding: 8px 10px;
+  background-color: transparent; border: none; border-radius: 20px;
+  cursor: pointer; font-weight: 100; font-size: 15px; color: var(--primary-text-color);
+  transition: background-color 0.2s ease;
+}
+.createPostActionButton:hover { background-color: var(--theme-button-hover-bg); }
+.createPostActionIcon { width: 20px; height: 20px; object-fit: contain; font-size: 20px; line-height: 1; }
+
+.expandedPostForm {
+  display: flex; flex-direction: column; padding: 15px; 
+  border-top: none; border-left: none; border-right: none; 
+}
+.inTriggerTextarea { /* Текст, що вводиться */
+    font-family: var(--content-font-family); font-weight: 400;
+    flex-grow: 1; font-size: 20px; color: var(--primary-text-color); 
+    line-height: 1.4; border: none; outline: none; resize: none; 
+    background-color: transparent; padding-top: 8px; 
+    min-height: 50px; max-height: 200px; overflow-y: auto; 
+}
+.inTriggerTextarea::placeholder { font-family: var(--content-font-family); color: var(--input-placeholder-color); font-weight: 100; }
+.expandedTitleInput { /* Текст, що вводиться */
+  font-family: var(--content-font-family); font-weight: 400;
+  font-size: 18px; padding: 10px 0; border: none;
+  border-bottom: 1px solid var(--card-border-color); 
+  outline: none; margin-bottom: 15px; background-color: transparent;
+  color: var(--primary-text-color); width: 100%; 
+}
+.expandedTitleInput::placeholder { font-family: var(--content-font-family); color: var(--input-placeholder-color); font-weight: 100; }
+.imagePreviewContainer { position: relative; margin-bottom: 15px; max-width: 100%; align-self: center; }
+.imagePreview { display: block; max-width: 100%; max-height: 250px; border-radius: 12px; border: 1px solid var(--input-border-color); object-fit: cover; }
+.removeImageButton { /* ... */ }
+.expandedFormActionsBar { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--card-border-color); }
+.attachmentButtons { display: flex; gap: 8px; }
+.expandedFormIconButton { background: none; border: none; color: var(--accent-color); cursor: pointer; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.expandedFormIconButton:hover { background-color: var(--theme-button-hover-bg); }
+.expandedFormActionIcon { width: 22px; height: 22px; }
+.hiddenFileInput { display: none; }
+.submitActions { display: flex; gap: 10px; }
+.formButton { /* Текст на кнопках - UI */
+  font-family: sans-serif;
+  padding: 8px 16px; border: 1px solid transparent; border-radius: 25px;
+  cursor: pointer; font-weight: 800; font-size: 15px;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+.publishButton { background-color: var(--button-primary-bg); color: var(--button-primary-text); }
+.publishButton:hover:not(:disabled) { background-color: var(--button-primary-hover-bg); }
+.publishButton:disabled { background-color: var(--secondary-text-color); color: var(--primary-background-color); }
+.cancelButton {
+  background-color: var(--input-background-color); 
+  color: var(--primary-text-color); 
+  border: 1px solid var(--input-border-color);
+}
+.cancelButton:hover { background-color: var(--card-border-color); }
+
+/* my-app/src/components/Pages/Main_page/Main_page.module.css */
+
+/* ... (інші стилі залишаються такими ж) ... */
+
+.postsFeed {
+  composes: contentBlock;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  margin-bottom: 20px;
+  padding: 15 15px; /* ЗМІНЕНО: додано горизонтальні внутрішні відступи по 15px */
+}
+
+/* ... (решта стилів) ... */
+.error { 
+  font-family: var(--content-font-family);
+  color: var(--error-text-color); background-color: var(--error-bg-color);
+  border: 1px solid var(--error-border-color); padding: 10px; border-radius: 8px; 
+  margin: 10px 20px; text-align: center; font-size: 0.9rem;
+}
+.loadingMessage, .noPostsMessage { 
+  font-family: var(--content-font-family);
+  color: var(--secondary-text-color); 
+  padding: 20px; text-align: center;
+}

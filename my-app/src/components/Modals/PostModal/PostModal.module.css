@@ -1,0 +1,99 @@
+/* my-app/src/components/Modals/PostModal/PostModal.module.css */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75); /* Трохи темніше затемнення */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modalContent {
+  position: relative;
+  background-color: var(--secondary-background-color);
+  border-radius: 12px;
+  /* Ось ці властивості визначають розмір: */
+  width: 120vw;       /* Ширина: 90% від ширини видимої області вікна браузера */
+  max-width: 1200px;  /* Максимальна ширина: 950 пікселів (щоб не було надто широким на великих екранах) */
+  height: 90vh;      /* Висота: 90% від висоти видимої області вікна браузера */
+  max-height: 800px; /* Максимальна висота: 800 пікселів (щоб не було надто високим) */
+  
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Важливо, щоб внутрішній скрол працював, а не модалка розтягувалася */
+}
+
+.closeButton {
+  position: absolute;
+  top: 12px; /* Трохи більше відступ */
+  right: 12px;
+  background: rgba(15, 20, 25, 0.75); /* Напівпрозорий фон для кнопки */
+  border: none;
+  font-size: 18px; /* Розмір іконки */
+  color: white; /* Колір іконки */
+  cursor: pointer;
+  padding: 0; /* Прибираємо падінг, щоб розмір залежав від іконки */
+  width: 32px;  /* Фіксований розмір кнопки */
+  height: 32px; /* Фіксований розмір кнопки */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: background-color 0.2s ease;
+}
+
+.closeButton:hover {
+  background-color: rgba(39, 44, 48, 0.75);
+}
+
+.postWrapperScrollable {
+  overflow-y: auto;
+  padding: 20px;
+  flex-grow: 1; /* Дозволяє цьому блоку зайняти весь доступний простір по висоті */
+  /* padding-top: 50px;  Видаляємо, кнопка тепер absolute */
+}
+
+.postWrapperScrollable > article {
+  margin-bottom: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important; 
+}
+
+@media (max-width: 1024px) { /* Адаптуємо для менших екранів */
+  .modalContent {
+    max-width: 90vw;
+    height: 85vh; /* Трохи менше на менших екранах */
+  }
+}
+
+@media (max-width: 768px) {
+  .modalOverlay {
+    padding: 10px; /* Менші відступи на мобільних */
+  }
+  .modalContent {
+    max-width: 100%; /* На всю ширину на дуже маленьких екранах */
+    height: 90vh;
+    border-radius: 8px; /* Можна зменшити радіус */
+  }
+  .postWrapperScrollable {
+    padding: 15px;
+    /* padding-top: 45px; */
+  }
+  .closeButton {
+    font-size: 16px;
+    width: 28px;
+    height: 28px;
+    top: 10px;
+    right: 10px;
+  }
+}

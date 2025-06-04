@@ -1,0 +1,335 @@
+/* my-app/src/components/Header/Header.module.css */
+.header {
+  height: var(--header-height, 60px);
+  background-color: var(--secondary-background-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--card-border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  font-family: var(--namu-font-family); 
+}
+
+.leftSide {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.logoImg {
+  height: 32px;
+  margin-right: 8px;
+}
+
+.logoText {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--primary-text-color);
+}
+
+.searchContainer {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+.searchForm {
+  display: flex;
+  align-items: center;
+  background: var(--input-background-color); 
+  border-radius: 25px;
+  padding: 0 10px;
+  height: 40px;
+  width: 100%;
+  max-width: 450px;
+  border: 1px solid var(--input-border-color);
+}
+.searchForm:focus-within {
+  border-color: var(--accent-color);
+  background-color: var(--secondary-background-color);
+  box-shadow: 0 0 0 2px var(--theme-button-active-shadow, rgba(29, 155, 240, 0.2));
+}
+
+.searchButtonIcon {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--secondary-text-color);
+}
+
+.searchIconInForm {
+  width: 18px;
+  height: 18px;
+  opacity: 0.7;
+}
+
+.searchInput {
+  font-family: var(--content-font-family); /* Для тексту в полі пошуку */
+  border: none; 
+  outline: none; 
+  background: transparent; 
+  flex: 1;
+  font-size: 15px; 
+  font-weight: 400; /* Стандартна жирність для контенту */
+  color: var(--primary-text-color);
+}
+.searchInput::placeholder {
+  font-family: var(--content-font-family); /* Для плейсхолдера */
+  color: var(--input-placeholder-color); 
+  font-weight: 400; /* Стандартна жирність */
+}
+
+.rightSide {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerIconButton {
+  background: none;
+  border: none;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  color: var(--secondary-text-color); 
+}
+.headerIconButton:hover {
+  background-color: var(--theme-button-hover-bg); 
+}
+
+.headerIcon {
+  width: 22px;
+  height: 22px;
+}
+
+.notificationBadge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background-color: var(--error-text-color); 
+  color: white; /* Залишаємо білим для контрасту */
+  border-radius: 50%;
+  min-width: 16px;
+  height: 16px;
+  font-size: 10px; /* Може бути NAMU, якщо дуже дрібний UI елемент */
+  font-weight: bold; /* NAMU */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 1px solid var(--secondary-background-color);
+  box-sizing: border-box;
+}
+
+.loginBtn {
+  padding: 8px 16px;
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-text);
+  border: none; 
+  border-radius: 20px; 
+  cursor: pointer;
+  font-weight: 800; /* NAMU */
+  font-size: 15px; /* NAMU */
+  transition: background-color 0.2s ease;
+}
+.loginBtn:hover {
+  background-color: var(--button-primary-hover-bg);
+}
+
+.avatarWrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--card-border-color);
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background: var(--secondary-background-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  width: 220px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--card-border-color);
+}
+
+.dropdownMenu p { /* Текст пунктів меню - UI елемент */
+  font-family: var(--namu-font-family);
+  margin: 0; 
+  font-size: 15px; 
+  cursor: pointer;
+  color: var(--primary-text-color); 
+  padding: 12px 16px;
+  font-weight: 100; 
+  border-bottom: 1px solid var(--card-border-color);
+}
+.dropdownMenu p:last-child {
+    border-bottom: none;
+}
+.dropdownMenu p:hover {
+  background-color: var(--primary-background-color);
+}
+
+.notificationsIconWrapper {
+  position: relative;
+}
+
+.notificationsDropdown {
+  position: absolute;
+  top: calc(100% + 10px); 
+  right: 0;
+  width: 360px; 
+  max-height: 450px; 
+  background-color: var(--secondary-background-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--card-border-color); 
+  z-index: 1010; 
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdownHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--card-border-color);
+}
+
+.dropdownHeader h4 { /* Заголовок "Сповіщення" - UI */
+  font-family: var(--namu-font-family);
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--primary-text-color);
+}
+
+.notificationsList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-grow: 1;
+}
+
+.notificationItem {
+  display: flex;
+  align-items: flex-start;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--card-border-color);
+  cursor: pointer;
+  gap: 10px;
+  position: relative;
+}
+.notificationItem:last-child {
+  border-bottom: none;
+}
+.notificationItem:hover {
+  background-color: var(--primary-background-color);
+}
+.notificationItem.unread {
+  /* Можна додати фон для непрочитаних */
+}
+
+.notificationAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.notificationContent {
+  flex-grow: 1;
+}
+
+.notificationText { /* Текст сповіщення - контент */
+  font-family: var(--content-font-family);
+  font-weight: 400; /* Стандартний */
+  margin: 0 0 4px 0;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--primary-text-color);
+}
+.notificationItem.unread .notificationText {
+    font-weight: 600; /* Жирніший для непрочитаних */
+}
+
+.notificationTime { /* Час сповіщення - частина UI */
+  font-family: var(--namu-font-family);
+  font-size: 13px;
+  color: var(--secondary-text-color);
+  font-weight: 100;
+}
+
+.unreadDot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent-color); 
+  border-radius: 50%;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.noNotifications, .loadingMessage {
+  font-family: var(--content-font-family); /* Повідомлення для користувача */
+  padding: 20px;
+  text-align: center;
+  color: var(--secondary-text-color);
+  font-size: 15px;
+  font-weight: 100; /* Може бути 400 для системного */
+}
+
+.dropdownFooter {
+  padding: 10px 16px;
+  border-top: 1px solid var(--card-border-color);
+  text-align: center;
+}
+.dropdownFooter button { /* Текст "Усі сповіщення" - UI */
+  font-family: var(--namu-font-family);
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  font-weight: 100;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 8px;
+}
+.dropdownFooter button:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .searchContainer { display: none; }
+  .logoText { font-size: 20px; }
+  .headerIconButton { padding: 6px; }
+  .headerIcon { width: 20px; height: 20px; }
+}

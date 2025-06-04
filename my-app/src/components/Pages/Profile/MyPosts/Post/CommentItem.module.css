@@ -1,0 +1,212 @@
+/* my-app/src/components/Pages/Profile/MyPosts/Post/CommentItem.module.css */
+.commentItemWrapper {
+  position: relative; /* Для псевдоелемента лінії */
+  /* Відступ між коментарями одного рівня та їх відповідями */
+  margin-bottom: 8px; 
+}
+.commentItemWrapper:last-child {
+  margin-bottom: 0;
+}
+
+/* Стиль для лінії, що з'єднує відповіді з батьківським коментарем */
+/* Використовуємо padding-left та border-left на самому .commentItemWrapper */
+.lineConnector::before {
+  content: '';
+  position: absolute;
+  left: 16px; 
+  top: 20px;  
+  bottom: 0; 
+  width: 2px;
+  background-color: var(--card-border-color-alpha);
+  z-index: 0; 
+} 
+
+
+.commentItem {
+  display: flex;
+  gap: 10px;
+  padding-top: 8px; /* Невеликий відступ зверху для кожного коментаря */
+}
+.commentItemWrapper + .commentItemWrapper { 
+  /* Верхня лінія для розділення коментарів одного рівня, але не перед першим */
+   border-top: 1px solid var(--card-border-color-alpha);
+   padding-top: 8px; /* Якщо є border-top, додаємо падінг до обгортки */
+   margin-top: 8px;  /* Якщо є border-top, додаємо маржин до обгортки */
+}
+
+
+.commentAvatarLink {
+  display: block; /* Для коректного відображення */
+  flex-shrink: 0;
+}
+.commentAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: var(--input-background-color);
+  margin-top: 2px; /* Вирівнювання з текстом */
+}
+
+.commentContent {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.commentHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.commentAuthor {
+  font-family: sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--primary-text-color);
+  text-decoration: none;
+}
+.commentAuthor:hover {
+  text-decoration: underline;
+}
+
+.commentDate {
+  font-family: sans-serif;
+  font-size: 12px;
+  color: var(--secondary-text-color);
+  font-weight: 100;
+}
+
+.commentText {
+  font-family: sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--primary-text-color);
+  margin: 0 0 6px 0; /* Зменшено нижній відступ */
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.commentActions {
+  display: flex;
+  gap: 15px; /* Збільшено проміжок */
+  align-items: center;
+  margin-top: 4px;
+}
+
+.actionLink, .toggleRepliesButton {
+  font-family: sans-serif;
+  background: none;
+  border: none;
+  color: var(--secondary-text-color);
+  font-size: 13px; /* Збільшено */
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.actionLink:hover, .toggleRepliesButton:hover {
+  text-decoration: none; /* Прибираємо підкреслення, якщо є іконка */
+  color: var(--accent-color);
+}
+.actionLink svg, .toggleRepliesButton svg {
+  font-size: 14px; /* Розмір іконок в кнопках */
+}
+.deleteActionLink {
+    color: var(--error-text-color);
+}
+.deleteActionLink:hover {
+    color: var(--error-text-color-hover);
+}
+
+
+.replyForm {
+  margin-top: 10px;
+  /* padding-left: 42px; Прибираємо, бо відступ вже є у .nestedComments або .commentItemWrapper */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  background-color: var(--primary-background-color); /* Легкий фон для форми */
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--card-border-color-alpha);
+}
+/* Лінія-зв'язок для форми відповіді (опціонально) */
+/* .replyForm::before { 
+  content: '';
+  position: absolute;
+  left: -27px; // (-(відступ nestedComments) + (ширина аватара/2) - (товщина лінії/2))
+  top: 0;  
+  height: 20px; // До середини першого рядка textarea
+  width: 2px;
+  background-color: var(--card-border-color-alpha);
+} */
+
+.replyTextarea {
+  font-family: var(--content-font-family);
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--input-border-color);
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: var(--input-background-color);
+  color: var(--primary-text-color);
+  box-sizing: border-box;
+  resize: vertical;
+  min-height: 50px; /* Трохи більше */
+  line-height: 1.4;
+}
+.replyTextarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  background-color: var(--secondary-background-color);
+  box-shadow: 0 0 0 2px var(--theme-button-active-shadow);
+}
+
+.replyFormActions {
+    display: flex;
+    justify-content: flex-end; /* Кнопка справа */
+}
+
+.replySubmitButton {
+  font-family: sans-serif;
+  background-color: var(--accent-color);
+  color: var(--button-primary-text);
+  border: none;
+  padding: 8px 18px; /* Збільшено падінги */
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  /* align-self: flex-end; */ /* Вже обробляється replyFormActions */
+  transition: background-color 0.2s ease;
+}
+.replySubmitButton:hover:not(:disabled) {
+  background-color: var(--accent-color-hover);
+}
+.replySubmitButton:disabled {
+  background-color: var(--secondary-text-color);
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.commentError {
+  font-family: sans-serif;
+  color: var(--error-text-color);
+  font-size: 12px;
+  margin-top: 4px;
+  /* padding-left: 42px; */ /* Прибираємо, щоб було під формою */
+  text-align: right; /* Якщо кнопка справа */
+}
+
+.nestedCommentsContainer { /* Контейнер для відповідей на цей коментар */
+  margin-top: 10px; /* Відступ від батьківського коментаря */
+  /* padding-left та border-left тепер встановлюються через style в CommentItemWrapper */
+}

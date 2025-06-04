@@ -1,0 +1,140 @@
+@font-face {
+  font-family: 'NAMU';
+  src: url('../../../public/fonts/NAMU-1400.woff2') format('woff2'),
+       url('../../../public/fonts/NAMU-1400.woff') format('woff');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NAMU';
+  src: url('../../../public/fonts/NAMU-1600.woff2') format('woff2'),
+       url('../../../public/fonts/NAMU-1600.woff') format('woff');
+  font-weight: 600;
+  font-display: swap;
+}
+
+/* my-app/src/components/Auth/Auth.module.css */
+@font-face { /* ... (ваші @font-face) ... */ }
+
+.authContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 450px;
+  width: 90%;
+  margin: 40px auto;
+  padding: 30px;
+  background: var(--secondary-background-color, #FAFAFA); /* Тема */
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  font-family: sans-serif; /* Тема */
+  border: 1px solid var(--card-border-color, #E0E0E0); /* Тема */
+}
+
+.authTitle {
+  font-family: sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--primary-text-color, #000000); /* Тема */
+  margin-bottom: 25px;
+}
+
+.authForm { width: 100%; margin-bottom: 20px; }
+
+.formSubtitle {
+  font-family: sans-serif;
+  font-style: normal;
+  font-weight: 100;
+  font-size: 20px;
+  line-height: 24px;
+  color: var(--primary-text-color, #000000); /* Тема */
+  margin: 20px 0 15px;
+  text-align: center;
+}
+
+.inputGroup { display: flex; flex-direction: column; gap: 15px; width: 100%; }
+
+.authInput, .dateSelect {
+  box-sizing: border-box;
+  width: 100%;
+  height: 60px;
+  padding: 15px 20px;
+  background: var(--input-background-color, #FFFFFF); /* Тема */
+  border: 1px solid var(--input-border-color, #000000); /* Тема */
+  border-radius: 15px;
+  font-family: sans-serif;
+  font-style: normal;
+  font-weight: 100;
+  font-size: 18px;
+  line-height: 1.2;
+  color: var(--primary-text-color, #000000); /* Тема */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+.authInput::placeholder { 
+    color: var(--input-placeholder-color, #8D8D8D); /* Тема */
+    font-weight: 100;
+}
+
+.authInput:focus, .dateSelect:focus {
+  outline: none;
+  border-color: var(--accent-color, #3860E1); /* Тема */
+  background-color: var(--secondary-background-color, #fff); /* Тема */
+  box-shadow: 0 0 0 3px var(--theme-button-active-shadow, rgba(56, 96, 225, 0.2)); /* Тема */
+}
+
+.dateInputs { display: flex; gap: 10px; width: 100%; }
+.dateSelect { flex: 1; height: 50px; padding: 10px 15px; font-size: 16px; }
+
+.submitButton {
+  box-sizing: border-box; width: 100%; max-width: 261px; height: 62px;
+  padding: 15px; margin: 25px auto 0; display: block;
+  background: var(--button-primary-bg, #000000); /* Тема */
+  border: 1px solid var(--button-primary-bg, #000000); /* Тема */
+  border-radius: 25px;
+  font-family: sans-serif;
+  font-style: normal; font-weight: 100; font-size: 20px; line-height: 24px;
+  color: var(--button-primary-text, #FFFFFF); /* Тема */
+  cursor: pointer;
+  transition: background 0.3s ease, opacity 0.3s ease;
+}
+.submitButton:disabled {
+  background: var(--secondary-text-color, #555); /* Тема */
+  cursor: not-allowed; opacity: 0.7;
+}
+.submitButton:hover:not(:disabled) {
+  background: var(--button-primary-hover-bg, #333); /* Тема */
+}
+
+.forgotLink {
+  display: block; text-align: center; margin: 15px 0;
+  font-family: sans-serif;
+  font-style: normal; font-weight: 400; font-size: 16px; line-height: 19px;
+  color: var(--secondary-text-color, #8D8D8D); /* Тема */
+  text-decoration: none;
+}
+.forgotLink:hover { text-decoration: underline; }
+
+.authFooter { width: 100%; text-align: center; margin-top: 20px; }
+.termsText { font-size: 12px; color: var(--secondary-text-color, #777); /* Тема */ margin-bottom: 15px; max-width: 350px; margin-left: auto; margin-right: auto; }
+.divider { height: 1px; background: var(--card-border-color, #ddd); /* Тема */ margin: 20px 0; }
+
+.loginPrompt, .registerPrompt {
+  font-family: var(--namu-font-family, 'NAMU', sans-serif);
+  font-style: normal; font-weight: 400; font-size: 16px; line-height: 19px;
+  color: var(--secondary-text-color, #8D8D8D); /* Тема */
+  margin: 0 5px 0 0; display: inline-block;
+}
+.loginLink, .registerLink {
+  font-family: sans-serif;
+  font-style: normal; font-weight: 100; font-size: 16px; line-height: 19px;
+  color: var(--accent-color, #3860E1); /* Тема */
+  text-decoration: none; font-weight: bold; display: inline-block;
+}
+.loginLink:hover, .registerLink:hover { text-decoration: underline; }
+
+@media (max-width: 480px) { /* ... (адаптивність без змін кольорів) ... */ }

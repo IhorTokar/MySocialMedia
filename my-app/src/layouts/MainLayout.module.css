@@ -1,0 +1,44 @@
+/* my-app/src/layouts/MainLayout.module.css */
+.appWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--primary-background-color);
+  font-family: sans-serif; /* Загальний шрифт для UI */
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  overflow: hidden; 
+}
+
+.mainContent {
+  flex-grow: 1;
+  padding: 20px; 
+  overflow-y: auto;
+  background-color: var(--primary-background-color); 
+}
+
+.rightSidebar {
+  width: 350px; 
+  flex-shrink: 0;
+  padding: 0 15px 15px 15px; 
+  overflow-y: auto; 
+  background-color: var(--primary-background-color); 
+  height: calc(100vh - var(--header-height, 60px)); 
+  box-sizing: border-box;
+  border-left: 1px solid var(--card-border-color);
+}
+
+@media (max-width: 1200px) {
+  .rightSidebar {
+    width: 300px;
+  }
+}
+
+@media (max-width: 992px) {
+   .rightSidebar {
+      display: none;
+   }
+}

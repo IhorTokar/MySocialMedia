@@ -1,0 +1,97 @@
+/* my-app/src/components/Pages/Users/UsersContainer.module.css */
+
+.usersPageContainer {
+  padding: 20px; /* Загальний відступ для сторінки */
+  /* Можна додати max-width та margin: auto, якщо потрібно центрувати 
+     і обмежувати ширину всієї сторінки користувачів,
+     аналогічно до .mainPageWrapper */
+  /* max-width: 900px; */
+  /* margin: 0 auto; */
+  font-family: var(--namu-font-family, 'NAMU', sans-serif);
+}
+
+.tabsContainer {
+  display: flex;
+  margin-bottom: 25px; /* Відступ від вкладок до списку користувачів */
+  border-bottom: 1px solid var(--card-border-color);
+  /* padding-bottom: 0; -- Якщо підкреслення активної вкладки має бути на рівні рамки */
+}
+
+.tabButton {
+  padding: 12px 20px; /* Внутрішні відступи для кнопок-вкладок */
+  font-family: var(--namu-font-family, 'NAMU', sans-serif);
+  font-size: 16px;   /* Розмір шрифту для вкладок */
+  font-weight: 600;  /* Зробимо трохи жирнішим */
+  border: none;      /* Прибираємо стандартну рамку кнопки */
+  border-bottom: 2px solid transparent; /* Прозора рамка для неактивних */
+  background-color: transparent; /* Прозорий фон */
+  color: var(--secondary-text-color); /* Колір тексту для неактивної вкладки */
+  cursor: pointer;
+  margin-right: 10px; /* Відстань між вкладками */
+  margin-bottom: -1px; /* Щоб активна рамка "зливалася" з нижньою рамкою .tabsContainer */
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.tabButton:hover {
+  color: var(--primary-text-color); /* Колір тексту при наведенні */
+  background-color: var(--primary-background-color); /* Легкий фон при наведенні */
+}
+
+.tabButton.activeTab {
+  color: var(--accent-color); /* Колір тексту для активної вкладки */
+  border-bottom: 2px solid var(--accent-color); /* Кольорове підкреслення для активної */
+  font-weight: 800; /* Активна вкладка ще жирніша */
+}
+
+.tabButton:disabled { /* Стиль для неактивних кнопок під час завантаження */
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Стилі для повідомлень про завантаження/помилки/порожній список 
+   будуть використовуватися з Users.module.css, оскільки вони відносяться 
+   до компонента Users.jsx, який рендериться всередині UsersContainer.jsx 
+*/
+
+/* my-app/src/components/Pages/Users/UsersContainer.module.css */
+.usersPageContainer {
+  padding: 20px;
+  max-width: 900px; /* Загальна ширина для сторінки */
+  margin: 0 auto;
+}
+
+.tabsContainer {
+  display: flex;
+  margin-bottom: 25px;
+  border-bottom: 1px solid var(--card-border-color);
+}
+
+.tabButton {
+  padding: 12px 20px;
+  font-family: var(--namu-font-family, 'NAMU', sans-serif);
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-bottom: 3px solid transparent; /* Збільшено товщину для кращої видимості */
+  background-color: transparent;
+  color: var(--secondary-text-color);
+  cursor: pointer;
+  margin-right: 15px; /* Збільшено відступ */
+  margin-bottom: -1px; /* Для "злиття" з нижньою рамкою контейнера */
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.tabButton:hover {
+  color: var(--primary-text-color);
+}
+
+.tabButton.activeTab {
+  color: var(--accent-color);
+  border-bottom-color: var(--accent-color);
+  font-weight: 700; /* Трохи жирніше для активної вкладки */
+}
+
+.tabButton:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}

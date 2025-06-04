@@ -1,0 +1,96 @@
+/* my-app/src/pages/SearchResultsPage.module.css */
+.resultsPageContainer {
+    padding: 20px;
+    font-family: sans-serif;
+  }
+  
+  .resultsPageContainer h1 {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    color: #0F1419;
+  }
+  
+  .resultsSection {
+    margin-bottom: 30px;
+    background-color: #FFFFFF;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #EFF3F4;
+  }
+  
+  .resultsSection h2 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #0F1419;
+    border-bottom: 1px solid #EFF3F4;
+    padding-bottom: 10px;
+  }
+  
+  .userList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .userListItem {
+    /* Спільні стилі, якщо будуть */
+  }
+  
+  .userLink {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .userLink:hover {
+    background-color: #F7F9F9;
+  }
+  
+  .userAvatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+  }
+  
+  .userInfo {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .userName {
+    font-weight: 800;
+    font-size: 16px;
+    color: #0F1419;
+  }
+  
+  .userHandle {
+    font-weight: 100;
+    font-size: 15px;
+    color: #536471;
+  }
+  
+  .postList {
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* Пости вже мають border-bottom */
+  }
+  
+  .error {
+    color: #D93025;
+    background-color: #FAD2CF;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.9rem;
+  }

@@ -1,0 +1,24 @@
+@font-face {
+    font-family: "NAMU-1400";
+    src: url("/fonts/NAMU-1400.woff2") format("woff2"),
+         url("/fonts/NAMU-1400.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "NAMU-1600";
+    src: url("/fonts/NAMU-1600.woff2") format("woff2"),
+         url("/fonts/NAMU-1600.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "NAMU-1750";
+    src: url("/fonts/NAMU-1750.woff2") format("woff2"),
+         url("/fonts/NAMU-1750.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+  }
+  

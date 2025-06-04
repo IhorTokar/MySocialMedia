@@ -1,0 +1,130 @@
+/* my-app/src/App.css */
+
+:root {
+  --primary-background-color: #F9F9F9; 
+  --secondary-background-color: #FFFFFF; 
+  --card-border-color: #EFF3F4; 
+  --primary-text-color: #0F1419; 
+  --secondary-text-color: #536471; 
+  --accent-color: #1D9BF0; 
+  --accent-color-hover: #1A8CD8; 
+  --button-primary-bg: #0F1419; 
+  --button-primary-text: #FFFFFF;
+  --button-primary-hover-bg: #272C30; 
+  
+  --namu-font-family: 'NAMU', sans-serif;
+  --content-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; /* Додано */
+
+  --success-bg-color: #E7F3FF;
+  --success-text-color: #1D9BF0;
+  --success-border-color: #B3D4F2;
+  --error-bg-color: #FDECEA;
+  --error-text-color: #D93025;
+  --error-border-color: #F8BABA;
+
+  --input-background-color: #F7F9F9; 
+  --input-border-color: #CFD9DE;
+  --input-focus-border-color: var(--accent-color);
+  --input-focus-bg-color: var(--secondary-background-color);
+  --input-placeholder-color: var(--secondary-text-color);
+
+  --theme-button-hover-bg: rgba(29, 155, 240, 0.05);
+  --theme-button-active-shadow: rgba(29, 155, 240, 0.3);
+
+  --header-height: 60px;
+
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --card-shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --post-gap: 15px;
+
+  --button-secondary-bg: #EFF3F4;
+  --button-secondary-text: var(--primary-text-color);
+  --button-secondary-border: var(--card-border-color);
+  --button-secondary-hover-bg: #E7E7E8;
+}
+
+html[data-theme="dark"] {
+  --primary-background-color: #15202B;
+  --secondary-background-color: #1E2732; 
+  --card-border-color: #38444D; 
+  --primary-text-color: #F7F9F9; 
+  --secondary-text-color: #8899A6; 
+  --button-primary-bg: #EFF3F4; 
+  --button-primary-text: #0F1419;
+  --button-primary-hover-bg: #D7DBDC;
+
+  --success-bg-color: #1c2e3a;
+  --success-text-color: #1D9BF0;
+  --success-border-color: #2c4a60;
+  --error-bg-color: #3a1c1c;
+  --error-text-color: #f5a0a0;
+  --error-border-color: #602c2c;
+
+  --input-background-color: #253341;
+  --input-border-color: #38444D;
+  --input-focus-bg-color: var(--secondary-background-color);
+  --input-placeholder-color: var(--secondary-text-color);
+
+  --theme-button-hover-bg: rgba(29, 155, 240, 0.1);
+
+  --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); 
+  --card-shadow-hover: 0 4px 10px rgba(0, 0, 0, 0.35);
+
+  --button-secondary-bg: #38444D;
+  --button-secondary-text: var(--primary-text-color);
+  --button-secondary-border: #536471;
+  --button-secondary-hover-bg: #536471;
+}
+
+html[data-theme="purple"] {
+  --primary-background-color: #F3EFFF; 
+  --secondary-background-color: #FFFFFF; 
+  --card-border-color: #D1C4E9; 
+  --primary-text-color: #4A0072; 
+  --secondary-text-color: #6A1B9A; 
+  --accent-color: #7B1FA2; 
+  --accent-color-hover: #6A1B9A;
+  --button-primary-bg: #4A0072; 
+  --button-primary-text: #FFFFFF;
+  --button-primary-hover-bg: #380053;
+
+  --success-bg-color: #E1D6E9;
+  --success-text-color: #7B1FA2;
+  --success-border-color: #B0A0C2;
+  --error-bg-color: #E9D6D6;
+  --error-text-color: #A21F1F;
+  --error-border-color: #C2A0A0;
+
+  --input-background-color: #EADDFF;
+  --input-border-color: #D1C4E9;
+  --input-focus-bg-color: var(--secondary-background-color);
+  --input-placeholder-color: var(--secondary-text-color);
+  
+  --theme-button-hover-bg: rgba(123, 31, 162, 0.05);
+
+  --card-shadow: 0 1px 3px rgba(74, 0, 114, 0.18); 
+  --card-shadow-hover: 0 2px 8px rgba(74, 0, 114, 0.22);
+
+   --button-secondary-bg: #E1D6E9;
+  --button-secondary-text: var(--primary-text-color);
+  --button-secondary-border: var(--card-border-color);
+  --button-secondary-hover-bg: #D1C4E9;
+}
+
+body {
+  font-family: var(--namu-font-family, sans-serif); /* Загальний шрифт для UI */
+  margin: 0;
+  padding: 0;
+  background-color: var(--primary-background-color);
+  color: var(--primary-text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Глобально для полів вводу, щоб текст користувача був стандартним шрифтом */
+input,
+textarea,
+select {
+  font-family: var(--content-font-family); /* Системний шрифт для контенту */
+  font-size: 16px; /* Або інший базовий розмір */
+  font-weight: 400; /* Стандартна жирність */
+}
