@@ -124,7 +124,7 @@
 .divider { height: 1px; background: var(--card-border-color, #ddd); /* Тема */ margin: 20px 0; }
 
 .loginPrompt, .registerPrompt {
-  font-family: var(--namu-font-family, 'NAMU', sans-serif);
+  font-family: sans-serif;
   font-style: normal; font-weight: 400; font-size: 16px; line-height: 19px;
   color: var(--secondary-text-color, #8D8D8D); /* Тема */
   margin: 0 5px 0 0; display: inline-block;

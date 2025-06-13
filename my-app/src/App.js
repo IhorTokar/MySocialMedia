@@ -20,6 +20,7 @@ import SavedPostsPage from "./components/Pages/SavedPostsPage.jsx/SavedPostsPage
 import PostModal from "./components/Modals/PostModal/PostModal";
 import EditPostModal from "./components/Modals/PostModal/EditPostModal.jsx";
 import ImageModal from "./components/Modals/ImageModal/ImageModal.jsx";
+import ForgotPassword from "./components/Auth/Forgotpassword.jsx";
 
 const AppInitializer = () => {
   const dispatch = useAppDispatch();
@@ -95,13 +96,13 @@ const AppInitializer = () => {
         <Route path="/profile/:userId?" element={<Profile />} />
         <Route path="/users" element={<UsersContainer />} />
         <Route path="/settings_page" element={<SettingsPage />} />
-        {/* <Route path="/recepts" element={<Recepts />} /> */}
         <Route path="/search" element={<SearchResultsPage />} />
         <Route path="/saved" element={<SavedPostsPage />} />
       </Route>
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Route>
     </Routes>
   );

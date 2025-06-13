@@ -1,46 +1,47 @@
-// my-app/src/components/Auth/Login.jsx
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../redux/AuthSlice';
-import { fetchUserProfile } from '../../redux/userSlice'; // Імпорт на місці
+import { fetchUserProfile } from '../../redux/userSlice';
 import s from './Auth.module.css';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { status, error } = useSelector((state) => state.auth || {}); // token тут не використовувався для логіки useEffect
+  const { status, error } = useSelector((state) => state.auth || {});
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  // Додаємо новий стан для відстеження спроби входу
+  const [hasAttemptedLogin, setHasAttemptedLogin] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
+    setHasAttemptedLogin(true); // Встановлюємо, що користувач зробив спробу входу
     dispatch(loginUser({ email, password }));
   };
 
   useEffect(() => {
-    // Це логіка, яка, ймовірно, була у вас спочатку
     if (status === 'succeeded') {
-      console.log("[Login.jsx - REVERTED] Login successful. Dispatching fetchUserProfile.");
+      console.log("[Login.jsx] Login successful. Dispatching fetchUserProfile.");
       dispatch(fetchUserProfile());
       navigate('/profile');
     }
-  }, [status, navigate, dispatch]); // Залежність від token тут не була критичною, якщо status='succeeded' вже означає наявність токену
+  }, [status, navigate, dispatch]);
 
   return (
     <div className={s.authContainer}>
       <h1 className={s.authTitle}>Вітаємо Назад!</h1>
       <div className={s.authForm}>
-        <h2 className={s.formSubtitle}>Введіть свій нікнейм та пароль</h2> {/* Або Email, як було у вашому оригіналі */}
+        <h2 className={s.formSubtitle}>Введіть свій Email та пароль</h2>
         <form onSubmit={handleLogin} className={s.inputGroup}>
           <input
             type="text"
-            placeholder="Email" // Або Нікнейм
+            placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className={s.authInput}
-            autoComplete="email" // Або username
+            autoComplete="email"
           />
           <input
             type="password"
@@ -50,18 +51,26 @@ const Login = () => {
             className={s.authInput}
             autoComplete="current-password"
           />
-          {status === 'failed' && error && (
-            <p style={{ color: 'red' }}>{error}</p>
+          {/* Показуємо помилку тільки якщо була спроба входу і статус 'failed' */}
+          {hasAttemptedLogin && status === 'failed' && error && (
+            <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>
           )}
           <button type="submit" className={s.submitButton} disabled={status === 'loading'}>
             {status === 'loading' ? 'Завантаження...' : 'Увійти в систему'}
           </button>
         </form>
       </div>
+      <a href="/forgot-password" className={s.forgotLink}>
+        Забули пароль?
+      </a>
       <div className={s.authFooter}>
-        <a href="/register" className={s.registerLink}>
-          Немає акаунта? Зареєструватися
-        </a>
+        <div className={s.divider}></div>
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <span className={s.loginPrompt}>Немає акаунта?</span>
+          <a href="/register" className={s.registerLink}>
+            Зареєструватися
+          </a>
+        </div>
       </div>
     </div>
   );
