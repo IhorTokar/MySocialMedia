@@ -163,7 +163,7 @@
 }
 
 .avatarUploadButton {
-  font-family: var(--namu-font-family);
+  font-family: sans-serif;
   padding: 10px 25px;
   background-color: var(--button-secondary-bg);
   color: var(--button-secondary-text);
@@ -308,7 +308,7 @@
 .adminUserInfo p strong {
   font-weight: 600; /* NAMU */
   color: var(--secondary-text-color);
-  font-family: var(--namu-font-family);
+  font-family: sans-serif;
 }
 
 .adminRoleEditor {
@@ -326,7 +326,7 @@
   font-size: 14px;
   color: var(--secondary-text-color);
   margin-right: 5px;
-  font-family: var(--namu-font-family);
+  font-family: sans-serif;
 }
 
 .adminRoleEditor .formSelect { /* Використовуємо існуючий клас для селектів */
@@ -336,6 +336,8 @@
 
 .adminRoleEditor .submitButtonSmall {
   margin-top: 0;
+  margin-bottom: 20px;
+  align-self: flex-end
 }
 
 .deleteButton { /* Загальний стиль для великих кнопок видалення */
@@ -357,7 +359,7 @@
   background-color: var(--primary-background-color);
   color: var(--primary-text-color);
   cursor: pointer;
-  font-family: var(--namu-font-family);
+  font-family: sans-serif;
   font-weight: 600; /* NAMU */
   transition: background-color 0.2s ease;
   margin-left: 5px;
@@ -429,7 +431,7 @@
   font-size: 15px;
   display: block;
   color: var(--primary-text-color);
-  font-family: var(--namu-font-family);
+  font-family: sans-serif;
 }
 
 .adminUserListHandle {
@@ -437,7 +439,7 @@
   color: var(--secondary-text-color);
   font-weight: 100; /* NAMU */
   display: block;
-  font-family: var(--namu-font-family);
+  font-family: sans-serif;
 }
 
 .adminUserListActions {

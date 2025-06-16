@@ -21,7 +21,7 @@ router.get("/", getPosts);
 router.get("/user/:userId", auth, getPostsByUserId);
 router.get("/search", auth, searchPostsController);
 router.get("/feed/following", auth, getFollowingFeedController);
-router.get("/popular", auth ,getPopularPostsController);
+router.get("/popular" ,getPopularPostsController);
 
 // Створення, оновлення, видалення постів
 router.post("/", auth, upload.single("contentImg"), addPost);

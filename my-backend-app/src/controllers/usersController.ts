@@ -23,6 +23,7 @@ import {
   getFollowingListForUser,
   getFollowersListForUser,
   getLatestUsersFromDB,
+  getFullUserByID,
 } from "../models/userModel";
 import { AdminUserDetailsUpdatePayload } from "../types/userTypes";
 import fs from 'fs/promises';   // <--- ДОДАНО ІМПОРТ fs.promises
@@ -190,6 +191,61 @@ const deleteUser = async (
     /* ... */ next(error);
   }
 };
+
+export const deleteMyAccountController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  // Отримуємо ID користувача з токена автентифікації
+  const userIdFromToken = req.user?.userID;
+  // Отримуємо пароль з тіла запиту (який надсилає фронтенд)
+  const { password } = req.body; 
+
+  if (!userIdFromToken) {
+    res.status(401).json({ error: "Unauthorized: User ID not found in token." });
+    return;
+  }
+
+  if (!password) {
+    res.status(400).json({ error: "Password is required to delete the account." });
+    return;
+  }
+
+  try {
+    const user = await getFullUserByID(userIdFromToken); 
+    
+    // Перевірка, чи користувача знайдено і чи є у нього хеш пароля
+    if (!user || !user.password_hash) { 
+      res.status(404).json({ error: "User not found or password hash missing." });
+      return;
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password_hash); // <-- Порівнюємо з password_hash
+    
+    // Якщо пароль невірний, повертаємо помилку 403 Forbidden
+    if (!isPasswordValid) {
+      res.status(403).json({ error: "Incorrect password. Account deletion failed." });
+      return;
+    }
+
+    await deleteUserFromDB(userIdFromToken);
+
+    res.status(200).json({ message: "Account deleted successfully." });
+  } catch (error) {
+    // Обробка помилок бази даних або інших непередбачених помилок
+    console.error(`Error in deleteMyAccountController for user ${userIdFromToken}:`, error);
+    
+    // Специфічна обробка, якщо deleteUserFromDB кидає помилку "User not found"
+    if (error instanceof Error && error.message.includes("User not found")) {
+        res.status(404).json({ error: "User not found." });
+    } else {
+        // Передача помилки наступному middleware (вашому централізованому обробнику помилок)
+        next(error); 
+    }
+  }
+};
+
 
 const updatePassword = async (
   req: Request,

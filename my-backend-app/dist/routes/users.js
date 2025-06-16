@@ -22,11 +22,13 @@ router.put("/me/details", auth_1.default, usersController_1.updateMyDetailsContr
 router.get("/me/following", auth_1.default, usersController_1.getSelfFollowingController);
 router.get("/me/followers", auth_1.default, usersController_1.getSelfFollowersController);
 router.get("/me/saved-posts", auth_1.default, postsController_1.getMySavedPostsController);
+router.delete("/me", auth_1.default, usersController_1.deleteMyAccountController);
 router.put("/update-password", auth_1.default, usersController_1.updatePassword); // Оновлення власного пароля
-router.get("/latest", usersController_1.getLatestUsersController);
+router.get("/latest", auth_1.default, usersController_1.getLatestUsersController);
 // --- Маршрути адміністрування (починаються з /admin/) ---
 router.get("/admin/details/:userId", auth_1.default, usersController_1.getUserDetailsForAdminController);
 router.put("/admin/update/:userId", auth_1.default, usersController_1.adminEditUserDetailsController);
+router.put("/admin/users/:userId/password-reset", auth_1.default, authController_1.adminResetUserPassword);
 // router.put("/admin/change-role/:userId", auth, changeUserRole); // Можливо, краще так, ніж з тіла запиту
 // --- Загальні маршрути (мають йти після більш специфічних) ---
 router.get("/search", auth_1.default, usersController_1.searchUsersController); // Пошук користувачів

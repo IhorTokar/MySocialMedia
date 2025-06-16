@@ -14,7 +14,7 @@ router.get("/", postsController_1.getPosts);
 router.get("/user/:userId", auth_1.default, postsController_1.getPostsByUserId);
 router.get("/search", auth_1.default, postsController_1.searchPostsController);
 router.get("/feed/following", auth_1.default, postsController_1.getFollowingFeedController);
-router.get("/popular", auth_1.default, postsController_1.getPopularPostsController);
+router.get("/popular", postsController_1.getPopularPostsController);
 // Створення, оновлення, видалення постів
 router.post("/", auth_1.default, fileUpload_1.default.single("contentImg"), postsController_1.addPost);
 router.route('/:postId')

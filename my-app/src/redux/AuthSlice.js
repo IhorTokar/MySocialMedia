@@ -84,6 +84,37 @@ export const changePassword = createAsyncThunk(
     }
   }
 );
+
+export const adminResetUserPassword = createAsyncThunk(
+  'auth/adminResetUserPassword',
+  async ({ userId, newPassword }, { getState, rejectWithValue }) => {
+    try {
+      const token = getState().auth.token; // Отримуємо токен для авторизації запиту
+      if (!token) {
+        return rejectWithValue('Відсутній токен авторизації.');
+      }
+
+      // Передаємо токен у заголовку Authorization
+      const response = await axios.put(
+        `${API_BASE_URL}/admin/users/${userId}/password-reset`,
+        { newPassword },
+        {
+          headers: {
+            Authorization: `Bearer ${token}` // Передача токена
+          },
+          withCredentials: true // Для cookies, якщо вони також використовуються
+        }
+      );
+      return response.data; // Очікуємо повідомлення про успіх
+    } catch (error) {
+      const message = error.response?.data?.error ||
+                      error.response?.data?.message ||
+                      error.message ||
+                      'Не вдалося скинути пароль адміністратором.';
+      return rejectWithValue(message);
+    }
+  }
+);
 // --- КІНЕЦЬ НОВОГО THUNK ---
 
 const authSlice = createSlice({
@@ -95,12 +126,18 @@ const authSlice = createSlice({
     error: null,    // Загальна помилка для login/register/logout
     passwordChangeStatus: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
     passwordChangeError: null,
+    adminPasswordResetStatus: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
+    adminPasswordResetError: null,
   },
   reducers: {
     // Можна додати редюсер для скидання passwordChangeStatus/Error, якщо потрібно
     resetPasswordChangeStatus: (state) => {
         state.passwordChangeStatus = 'idle';
         state.passwordChangeError = null;
+    },
+    resetAdminPasswordResetStatus: (state) => {
+        state.adminPasswordResetStatus = 'idle';
+        state.adminPasswordResetError = null;
     }
   },
   extraReducers: (builder) => {
@@ -130,7 +167,7 @@ const authSlice = createSlice({
         state.error = null; 
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-          state.status = 'succeeded'; // Або 'idle', оскільки реєстрація не означає автоматичний логін
+          state.status = 'idle'; // Або 'idle', оскільки реєстрація не означає автоматичний логін
           // Не змінюємо user/token тут, якщо реєстрація не логінить користувача
       })
       .addCase(registerUser.rejected, (state, action) => { 
@@ -172,9 +209,21 @@ const authSlice = createSlice({
       .addCase(changePassword.rejected, (state, action) => {
         state.passwordChangeStatus = 'failed';
         state.passwordChangeError = action.payload;
+      })
+      .addCase(adminResetUserPassword.pending, (state) => {
+        state.adminPasswordResetStatus = 'loading';
+        state.adminPasswordResetError = null;
+      })
+      .addCase(adminResetUserPassword.fulfilled, (state) => {
+        state.adminPasswordResetStatus = 'succeeded';
+        state.adminPasswordResetError = null;
+      })
+      .addCase(adminResetUserPassword.rejected, (state, action) => {
+        state.adminPasswordResetStatus = 'failed';
+        state.adminPasswordResetError = action.payload;
       });
   }
 });
 
-export const { resetPasswordChangeStatus } = authSlice.actions;
+export const { resetPasswordChangeStatus, resetAuthStatus, resetAdminPasswordResetStatus } = authSlice.actions;
 export default authSlice.reducer;

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getLatestUsersFromDB = exports.getFollowersListForUser = exports.getFollowingListForUser = exports.getAuthenticatedUserProfileData = exports.getFullUserProfileByIdForAdmin = exports.updateUserDetailsInDB = exports.getUserLastLogout = exports.updateUserLastLogoutTime = exports.searchUsersInDB = exports.getPrivateUserDataByUserId = exports.unfollowUserInDB = exports.followUserInDB = exports.getUsersWithFollowStatus = exports.getUserByIdFromDB = exports.getUserByUIDFromDB = exports.updateUserRole = exports.updateUserAvatarInDB = exports.updatePasswordInDB = exports.checkEmailExistsInDB = exports.getUserByEmailFromDB = exports.deleteUserFromDB = exports.addUserToDB = exports.getUsersFromDB = exports.adminUpdateUserCoreDetails = void 0;
+exports.adminUpdateUserCoreDetails = exports.getLatestUsersFromDB = exports.getFollowersListForUser = exports.getFollowingListForUser = exports.getAuthenticatedUserProfileData = exports.getFullUserProfileByIdForAdmin = exports.updateUserDetailsInDB = exports.getUserLastLogout = exports.updateUserLastLogoutTime = exports.searchUsersInDB = exports.getPrivateUserDataByUserId = exports.unfollowUserInDB = exports.followUserInDB = exports.getUsersWithFollowStatus = exports.getUserByIdFromDB = exports.getUserByUIDFromDB = exports.updateUserRole = exports.updateUserAvatarInDB = exports.updatePasswordInDB = exports.checkEmailExistsInDB = exports.getUserByEmailFromDB = exports.deleteUserFromDB = exports.addUserToDB = exports.getUsersFromDB = exports.updateUserPasswordAsAdmin = exports.getFullUserByID = void 0;
 // my-backend-app/src/models/userModel.ts
 const mssql_1 = __importDefault(require("mssql"));
 const db_1 = require("../config/db");
@@ -85,8 +85,7 @@ const getUserByUIDFromDB = async (uid) => {
     }
 };
 exports.getUserByUIDFromDB = getUserByUIDFromDB;
-const getUserByIdFromDB = async (targetUserId, currentAuthUserId // ID поточного авторизованого користувача (необов'язковий)
-) => {
+const getUserByIdFromDB = async (targetUserId, currentAuthUserId) => {
     try {
         const pool = await (0, db_1.connectDB)();
         const request = pool
@@ -281,7 +280,7 @@ exports.getPrivateUserDataByUserId = getPrivateUserDataByUserId;
 // --- КІНЕЦЬ НОВОЇ ФУНКЦІЇ ---
 // Додавання нового користувача
 const addUserToDB = async (username, displayName, gender, email, passwordHash, // Змінено назву параметра для ясності
-phone = "", profilePictureUrl = "", userAvatar = "default_avatar.png", date_of_birth // Зроблено необов'язковим, якщо може бути NULL у БД
+phone = "", profilePictureUrl = " ", userAvatar = "default_avatar.png", date_of_birth // Зроблено необов'язковим, якщо може бути NULL у БД
 ) => {
     // Додано тип повернення
     const pool = await (0, db_1.connectDB)();
@@ -290,6 +289,7 @@ phone = "", profilePictureUrl = "", userAvatar = "default_avatar.png", date_of_b
         await transaction.begin();
         // Створюємо запит В МЕЖАХ транзакції
         const request = transaction.request();
+        console.log("DEBUG: Значення user_Avatar, що передається в БД:", userAvatar);
         // Додаємо користувача в `users`
         const result = await // Додайте .input('uid', sql.NVarChar, generateSomeUid()) якщо uid генерується тут
          request
@@ -337,33 +337,62 @@ phone = "", profilePictureUrl = "", userAvatar = "default_avatar.png", date_of_b
 exports.addUserToDB = addUserToDB;
 // Видалення користувача
 const deleteUserFromDB = async (userId) => {
-    // Додано тип повернення
     const pool = await (0, db_1.connectDB)();
-    // Використовуємо транзакцію для безпечного видалення з обох таблиць
-    const transaction = pool.transaction();
+    const transaction = pool.transaction(); // Початок транзакції
     try {
-        await transaction.begin();
+        await transaction.begin(); // Починаємо транзакцію
         const request = transaction.request().input("userId", mssql_1.default.Int, userId);
-        // Спочатку видаляємо з залежної таблиці (user_private)
+        // --- КРОКИ ВИДАЛЕННЯ ПОВ'ЯЗАНИХ ДАНИХ (ПЕРЕД ОСНОВНИМИ ТАБЛИЦЯМИ) ---
+        // 1. Видалення повідомлень, де користувач є відправником або отримувачем
+        await request.query(`
+      DELETE FROM messages
+      WHERE sender_id = @userId OR recipient_id = @userId;
+    `);
+        // 2. Видалення записів про підписки/підписників
+        // Припустимо, у вас є таблиця follows (followers, following)
+        // ALTER TABLE follows ADD CONSTRAINT FK_Follows_Follower FOREIGN KEY (follower_id) REFERENCES users(user_id) ON DELETE CASCADE;
+        // ALTER TABLE follows ADD CONSTRAINT FK_Follows_Following FOREIGN KEY (following_id) REFERENCES users(user_id) ON DELETE CASCADE;
+        // Якщо ви не використовуєте CASCADE, видаляємо вручну:
+        await request.query(`
+      DELETE FROM follows -- Замініть на назву вашої таблиці підписок
+      WHERE follower_id = @userId OR following_id = @userId;
+    `);
+        // 3. Видалення постів, коментарів, лайків тощо
+        // Якщо posts.user_id посилається на users.user_id:
+        await request.query(`
+      DELETE FROM posts -- Замініть на назву вашої таблиці постів
+      WHERE user_id = @userId;
+    `);
+        // Якщо коментарі пов'язані з user_id:
+        await request.query(`
+      DELETE FROM comments -- Замініть на назву вашої таблиці коментарів
+      WHERE user_id = @userId;
+    `);
+        // Якщо лайки пов'язані з user_id:
+        await request.query(`
+      DELETE FROM likes -- Замініть на назву вашої таблиці лайків
+      WHERE user_id = @userId;
+    `);
+        // ... і так для всіх інших таблиць, які мають зовнішні ключі, що посилаються на users.user_id
+        // 4. Видалення з залежної таблиці (user_private)
+        // Цей запит вже був у вас
         await request.query(`DELETE FROM user_private WHERE user_id = @userId`);
-        // Потім видаляємо з основної таблиці (users)
+        // 5. Видалення з основної таблиці (users)
+        // Цей запит вже був у вас
         const userResult = await request.query(`DELETE FROM users WHERE user_id = @userId`);
+        // Завершуємо транзакцію, якщо всі операції були успішними
         await transaction.commit();
-        // Перевіряємо, чи був користувач видалений з основної таблиці
         if (userResult.rowsAffected[0] === 0) {
-            // Якщо користувача не було знайдено, можливо, варто кинути помилку ще до коміту,
-            // але поточна логіка припускає, що запит до user_private міг нічого не видалити, якщо користувача вже не було.
-            // Якщо rowsAffected[0] === 0, значить такого user_id не було в таблиці users.
             console.warn(`Attempted to delete non-existent user with ID: ${userId}`);
-            throw new Error("⚠ User not found"); // Кидаємо помилку, якщо користувача не знайдено
+            throw new Error("⚠ User not found");
         }
     }
     catch (error) {
-        await transaction.rollback(); // Робимо відкат при будь-якій помилці
+        // Відкочуємо транзакцію при будь-якій помилці
+        await transaction.rollback();
         console.error("❌ Error deleting user:", error);
-        // Перекидаємо помилку, щоб контролер міг її обробити
         if (error instanceof Error && error.message.includes("User not found")) {
-            throw error; // Перекидаємо помилку "User not found"
+            throw error;
         }
         throw new Error("Database error while deleting user");
     }
@@ -392,6 +421,27 @@ const getUserByEmailFromDB = async (email) => {
     }
 };
 exports.getUserByEmailFromDB = getUserByEmailFromDB;
+const getFullUserByID = async (userId) => {
+    try {
+        const pool = await (0, db_1.connectDB)();
+        const request = pool.request().input("userId", mssql_1.default.Int, userId); // Використовуємо @userId
+        const result = await request.query(`
+      SELECT
+        u.user_id, u.username, u.display_name, u.uid, u.profile_picture_url, u.gender, u.user_avatar_url, u.about_me,
+        p.email, p.password_hash, p.phone, p.role, p.date_of_birth
+      FROM users AS u
+      INNER JOIN user_private AS p
+        ON u.user_id = p.user_id
+      WHERE u.user_id = @userId; -- Змінено умову на u.user_id
+    `);
+        return result.recordset.length > 0 ? result.recordset[0] : null;
+    }
+    catch (error) {
+        console.error(`❌ Error fetching full user by ID ${userId}:`, error);
+        throw new Error("Database query error for getFullUserByID");
+    }
+};
+exports.getFullUserByID = getFullUserByID;
 // Перевірка, чи існує email
 const checkEmailExistsInDB = async (email) => {
     // Додано тип повернення
@@ -412,7 +462,6 @@ const checkEmailExistsInDB = async (email) => {
 exports.checkEmailExistsInDB = checkEmailExistsInDB;
 // Оновлення пароля користувача
 const updatePasswordInDB = async (userId, newPasswordHash) => {
-    // Додано тип повернення, змінено назву параметра
     try {
         const pool = await (0, db_1.connectDB)();
         const request = pool
@@ -1032,3 +1081,28 @@ const getLatestUsersFromDB = async (limit = 3, offset = 0, currentAuthUserId) =>
     }
 };
 exports.getLatestUsersFromDB = getLatestUsersFromDB;
+/**
+ * Оновлює пароль користувача (для використання адміністратором).
+ * @param userId - ID користувача, чий пароль потрібно змінити.
+ * @param newHashedPassword - Новий хешований пароль.
+ */
+const updateUserPasswordAsAdmin = async (userId, newHashedPassword) => {
+    const pool = await (0, db_1.connectDB)();
+    try {
+        const request = pool.request();
+        await request
+            .input("userId", mssql_1.default.Int, userId)
+            .input("newPasswordHash", mssql_1.default.NVarChar, newHashedPassword)
+            .query(`
+        UPDATE user_private
+        SET password_hash = @newPasswordHash
+        WHERE user_id = @userId;
+      `);
+        console.log(`✅ Адміністратор оновив пароль для user_id: ${userId}`);
+    }
+    catch (error) {
+        console.error(`❌ Помилка при оновленні пароля користувача ${userId} адміністратором:`, error);
+        throw new Error("Помилка бази даних при оновленні пароля користувача.");
+    }
+};
+exports.updateUserPasswordAsAdmin = updateUserPasswordAsAdmin;

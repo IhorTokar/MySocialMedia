@@ -34,7 +34,7 @@ const auth = (req: AuthenticatedRequest, res: Response, next: NextFunction): voi
   // Перевірка, чи токен взагалі прийшов
   if (!token) {
     console.error(`[AUTH MIDDLEWARE][${timestamp}] Помилка для '${fullPath}': Токен не надано (req.cookies.token порожній або undefined). Відповідь 401.`);
-    res.status(401).json({ error: "Unauthorized: No token provided" });
+    res.status(401).json({ error: "Неавторизований: будь-ласка ввійдіть в систему" });
     return;
   }
 

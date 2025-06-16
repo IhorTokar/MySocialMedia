@@ -25,8 +25,8 @@ function NavBar() {
   ];
 
   const handlePostButtonClick = () => {
-    console.log("Кнопка 'Допис' натиснута");
-    // navigate('/create-post');
+    console.log("Кнопка 'Допис' натиснута, перенаправлення на профіль");
+    navigate('/profile'); // <--- ВИПРАВЛЕНО: Перенаправлення на '/profile'
   };
 
   return (

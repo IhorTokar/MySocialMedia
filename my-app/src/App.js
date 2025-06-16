@@ -21,6 +21,7 @@ import PostModal from "./components/Modals/PostModal/PostModal";
 import EditPostModal from "./components/Modals/PostModal/EditPostModal.jsx";
 import ImageModal from "./components/Modals/ImageModal/ImageModal.jsx";
 import ForgotPassword from "./components/Auth/Forgotpassword.jsx";
+import DeleteConfirmModal from "./components/Modals/ComfirmModal/DeleteConfirmModal.jsx";
 
 const AppInitializer = () => {
   const dispatch = useAppDispatch();
@@ -113,7 +114,8 @@ const App = () => (
     <AppInitializer />
     <PostModal />
     <EditPostModal />
-    <ImageModal/ >
+    <ImageModal />
+    <DeleteConfirmModal />
   </Router>
 );
 

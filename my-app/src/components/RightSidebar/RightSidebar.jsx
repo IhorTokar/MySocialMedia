@@ -49,7 +49,7 @@ const RightSidebar = React.memo(({
 
   return (
     <aside className={styles.sidebarContainer}>
-      <div className={styles.searchSection}>
+      {/* <div className={styles.searchSection}>
         <div className={styles.searchInputWrapper}>
           <img
             src={process.env.PUBLIC_URL + "/icons/Search.png"}
@@ -59,7 +59,7 @@ const RightSidebar = React.memo(({
           />
           <input type="text" placeholder="Пошук по сайту..." className={styles.searchInput} />
         </div>
-      </div>
+      </div> */}
 
       <div className={styles.infoCard}>
         <h3 className={styles.cardTitle}>{popularItemsTitle || 'Популярні дописи'}</h3>

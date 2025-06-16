@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registrateUser = exports.loginUser = exports.getCurrentUser = void 0;
+exports.adminResetUserPassword = exports.registrateUser = exports.loginUser = exports.getCurrentUser = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const userModel_1 = require("../models/userModel");
@@ -138,10 +138,10 @@ exports.loginUser = loginUser;
 const registrateUser = async (req, res, next) => {
     const { userName, // Це ваш `username` для таблиці `users`
     displayName, // Це ваш `display_name` для таблиці `users`
-    gender, email, password, phone, date_of_birth, // Переконайтесь, що формат дати правильний або валідується/конвертується
-     } = req.body;
+    gender, email, password, phone, date_of_birth, } = req.body;
     // Припускаємо, що userAvatarUrl встановлюється за замовчуванням або буде інший механізм
-    const userAvatarUrl = "/uploads/avatars/default_avatar.png";
+    const userAvatarUrl = "default_avatar.png";
+    const profilePictureUrl = " ";
     // Валідація обов'язкових полів
     if (!userName || !email || !password || !phone || !displayName || !gender) {
         res
@@ -166,18 +166,11 @@ const registrateUser = async (req, res, next) => {
             return;
         }
         const hashedPassword = await bcrypt_1.default.hash(password, 10);
-        // Передаємо displayName як другий параметр, якщо addUserToDB очікує його там
         const newUser = await (0, userModel_1.addUserToDB)(userName, // username для таблиці users
-        displayName, // display_name для таблиці users
-        gender, email, hashedPassword, phone, "", // profilePictureUrl - поки порожній
-        userAvatarUrl, // userAvatar - дефолтний
-        date_of_birth);
+        displayName, gender, email, hashedPassword, phone, profilePictureUrl, userAvatarUrl, date_of_birth);
         res.status(201).json({
             message: "User created successfully",
             userId: newUser.userId,
-            // Можна повернути і інші дані нового користувача, якщо потрібно,
-            // наприклад, для автоматичного логіну після реєстрації (але це окрема логіка)
-            // avatar: userAvatarUrl // Якщо фронтенд очікує це
         });
     }
     catch (error) {
@@ -195,3 +188,35 @@ const registrateUser = async (req, res, next) => {
     }
 };
 exports.registrateUser = registrateUser;
+const adminResetUserPassword = async (req, res, next) => {
+    const { userId } = req.params; // Отримуємо userId з параметрів URL
+    const { newPassword } = req.body; // Отримуємо новий пароль з тіла запиту
+    // Отримуємо роль користувача, який робить запит, з токена (після authMiddleware)
+    const requestingUserRole = req.user?.role;
+    const requestingUserId = req.user?.userID;
+    // 1. Перевірка на роль адміністратора
+    if (!requestingUserRole || requestingUserRole !== "admin") {
+        res.status(403).json({ error: "Access Denied: Only administrators can perform this action." });
+        return;
+    }
+    // 2. Валідація вхідних даних
+    if (!userId || isNaN(parseInt(userId))) {
+        res.status(400).json({ error: "Недійсний ID користувача." });
+        return;
+    }
+    const targetUserId = parseInt(userId);
+    if (!newPassword || newPassword.length < 8) { // Мінімальна довжина пароля, відповідно до вашої логіки реєстрації
+        res.status(400).json({ error: "Новий пароль повинен бути щонайменше 8 символів." });
+        return;
+    }
+    try {
+        const hashedPassword = await bcrypt_1.default.hash(newPassword, 10);
+        await (0, userModel_1.updateUserPasswordAsAdmin)(targetUserId, hashedPassword);
+        res.status(200).json({ message: `Пароль користувача ${targetUserId} успішно скинуто.` });
+    }
+    catch (error) {
+        console.error(`Error in adminResetUserPassword for user ${targetUserId}:`, error);
+        next(error); // Передаємо помилку в централізований обробник
+    }
+};
+exports.adminResetUserPassword = adminResetUserPassword;

@@ -72,15 +72,34 @@ function DialogsContainer() {
 
     ws.onmessage = (event) => {
         try {
-            // --- ВИПРАВЛЕНО: Прибираємо 'as string' ---
-            // event.data зазвичай вже є рядком, якщо сервер надсилає текст
             const messageData = JSON.parse(event.data);
-            // --- КІНЕЦЬ ВИПРАВЛЕННЯ ---
             console.log("WebSocket Message Received:", messageData);
 
             if (messageData.type === 'new_message' && messageData.payload) {
-                dispatch(receiveMessage(messageData.payload));
+                // *** ВИПРАВЛЕНО: Тепер передаємо currentUserId ***
+                dispatch(receiveMessage({
+                    newMessageData: messageData.payload,
+                    currentUserId: currentUserId // <-- Додаємо currentUserId сюди
+                }));
             }
+            // *** ДОДАТКОВО: Додаємо обробку оновлених повідомлень ***
+            else if (messageData.type === 'message_updated' && messageData.payload) {
+                dispatch(receiveMessage({ // Можна використовувати той же ред'юсер, якщо він гнучкий
+                    newMessageData: messageData.payload,
+                    currentUserId: currentUserId
+                }));
+            }
+            // *** ДОДАТКОВО: Якщо бекенд надсилатиме про видалення ***
+            // else if (messageData.type === 'message_deleted' && messageData.payload) {
+            //     // Вам може знадобитися створити окремий ред'юсер `receiveDeletedMessage`
+            //     // або модифікувати `receiveMessage`, щоб він обробляв видалення
+            //     dispatch(receiveDeletedMessage({
+            //         messageID: messageData.payload.messageID,
+            //         partnerId: messageData.payload.partnerId,
+            //         currentUserId: currentUserId
+            //     }));
+            // }
+
         } catch (e) {
             console.error("Failed to parse WebSocket message:", event.data, e);
         }

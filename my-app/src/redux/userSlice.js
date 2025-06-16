@@ -1,6 +1,7 @@
 // my-app/src/redux/userSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { logoutUser } from './AuthSlice';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
@@ -26,6 +27,8 @@ const initialState = {
   // Стани для завантаження аватара
   uploadAvatarStatus: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
   uploadAvatarError: null,
+   deleteAccountStatus: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
+  deleteAccountError: null,
 };
 
 // --- Async Thunks ---
@@ -273,6 +276,32 @@ export const uploadUserAvatar = createAsyncThunk(
   }
 );
 
+export const deleteMyAccount = createAsyncThunk(
+  'user/deleteMyAccount',
+  async (password, { rejectWithValue, dispatch }) => {
+    const timestamp = new Date().toISOString();
+    try {
+      console.log(`[userSlice][${timestamp}] Спроба видалення акаунту.`);
+      const response = await axios.delete(`${API_BASE_URL}/users/me`, { data: { password }, withCredentials: true });
+      
+      console.log(`[userSlice][${timestamp}] Акаунт успішно видалено на бекенді.`);
+      // Після успішного видалення акаунту на бекенді,
+      // диспатчимо logoutUser, який очистить стан авторизації та локальний токен.
+      // Це також призведе до очищення даних користувача в інших слайсах, що реагують на logout.
+      dispatch(logoutUser()); 
+      // clearUserProfile тут може бути надлишковим, якщо logoutUser повністю очищає
+      // auth.user та user.profile, але додамо для гарантії.
+      dispatch(clearUserProfile()); 
+
+      return response.data.message; // Повертаємо повідомлення про успіх
+    } catch (error) {
+      const errorMessage = error.response?.data?.error || error.response?.data?.message || error.message || 'Помилка видалення акаунту';
+      console.error(`[userSlice][${timestamp}] Помилка видалення акаунту:`, errorMessage);
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
 
 const userSlice = createSlice({
   name: 'user',
@@ -285,6 +314,8 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.currentRequestId = undefined;
+      state.deleteAccountStatus = 'idle';
+      state.deleteAccountError = null;
     },
     clearViewedProfile: (state) => {
       const timestamp = new Date().toISOString();
@@ -322,6 +353,10 @@ const userSlice = createSlice({
     resetUploadAvatarStatus: (state) => {
       state.uploadAvatarStatus = 'idle';
       state.uploadAvatarError = null;
+    },
+    resetDeleteAccountStatus: (state) => {
+      state.deleteAccountStatus = 'idle';
+      state.deleteAccountError = null;
     },
   },
   extraReducers: (builder) => {
@@ -447,6 +482,24 @@ const userSlice = createSlice({
       .addCase(uploadUserAvatar.rejected, (state, action) => {
         state.uploadAvatarStatus = 'failed';
         state.uploadAvatarError = action.payload;
+      })
+      .addCase(deleteMyAccount.pending, (state) => {
+        state.deleteAccountStatus = 'loading';
+        state.deleteAccountError = null;
+      })
+      .addCase(deleteMyAccount.fulfilled, (state) => {
+        state.deleteAccountStatus = 'succeeded';
+        state.deleteAccountError = null;
+        // Профіль і токен вже будуть очищені через logoutUser, який диспатчиться в thunk
+        state.profile = null; 
+        state.viewedProfile = null; // Очистити також переглянутий профіль, якщо є
+        state.loading = false;
+        state.error = null;
+        state.currentRequestId = undefined;
+      })
+      .addCase(deleteMyAccount.rejected, (state, action) => {
+        state.deleteAccountStatus = 'failed';
+        state.deleteAccountError = action.payload || 'Невідома помилка при видаленні акаунту';
       });
   },
 });
@@ -455,6 +508,6 @@ export const {
     clearUserProfile, clearViewedProfile, resetUpdateUserStatus,
     clearAdminViewedUser, resetAdminUpdateRoleStatus, resetAdminDeleteUserStatus,
     resetAdminEditUserStatus, setViewedProfileFollowStatus,
-    resetUploadAvatarStatus // Експортуємо новий редьюсер
+    resetUploadAvatarStatus,resetDeleteAccountStatus  // Експортуємо новий редьюсер
 } = userSlice.actions;
 export default userSlice.reducer;

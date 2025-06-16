@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getLatestUsersController = exports.getSelfFollowersController = exports.getSelfFollowingController = exports.adminEditUserDetailsController = exports.updateMyDetailsController = exports.logoutUser = exports.unfollowUserController = exports.followUserController = exports.getUserByEmail = exports.updateUserAvatar = exports.changeUserRole = exports.updatePassword = exports.deleteUser = exports.getUserDetailsForAdminController = exports.searchUsersController = exports.getUserProfileById = exports.getUserByUID = exports.getAllUsers = void 0;
+exports.getLatestUsersController = exports.getSelfFollowersController = exports.getSelfFollowingController = exports.adminEditUserDetailsController = exports.updateMyDetailsController = exports.logoutUser = exports.unfollowUserController = exports.followUserController = exports.getUserByEmail = exports.updateUserAvatar = exports.changeUserRole = exports.updatePassword = exports.deleteUser = exports.getUserDetailsForAdminController = exports.searchUsersController = exports.getUserProfileById = exports.getUserByUID = exports.getAllUsers = exports.deleteMyAccountController = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const userModel_1 = require("../models/userModel");
 const promises_1 = __importDefault(require("fs/promises")); // <--- ДОДАНО ІМПОРТ fs.promises
@@ -142,6 +142,49 @@ const deleteUser = async (req, res, next) => {
     }
 };
 exports.deleteUser = deleteUser;
+const deleteMyAccountController = async (req, res, next) => {
+    // Отримуємо ID користувача з токена автентифікації
+    const userIdFromToken = req.user?.userID;
+    // Отримуємо пароль з тіла запиту (який надсилає фронтенд)
+    const { password } = req.body;
+    if (!userIdFromToken) {
+        res.status(401).json({ error: "Unauthorized: User ID not found in token." });
+        return;
+    }
+    if (!password) {
+        res.status(400).json({ error: "Password is required to delete the account." });
+        return;
+    }
+    try {
+        const user = await (0, userModel_1.getFullUserByID)(userIdFromToken);
+        // Перевірка, чи користувача знайдено і чи є у нього хеш пароля
+        if (!user || !user.password_hash) {
+            res.status(404).json({ error: "User not found or password hash missing." });
+            return;
+        }
+        const isPasswordValid = await bcrypt_1.default.compare(password, user.password_hash); // <-- Порівнюємо з password_hash
+        // Якщо пароль невірний, повертаємо помилку 403 Forbidden
+        if (!isPasswordValid) {
+            res.status(403).json({ error: "Incorrect password. Account deletion failed." });
+            return;
+        }
+        await (0, userModel_1.deleteUserFromDB)(userIdFromToken);
+        res.status(200).json({ message: "Account deleted successfully." });
+    }
+    catch (error) {
+        // Обробка помилок бази даних або інших непередбачених помилок
+        console.error(`Error in deleteMyAccountController for user ${userIdFromToken}:`, error);
+        // Специфічна обробка, якщо deleteUserFromDB кидає помилку "User not found"
+        if (error instanceof Error && error.message.includes("User not found")) {
+            res.status(404).json({ error: "User not found." });
+        }
+        else {
+            // Передача помилки наступному middleware (вашому централізованому обробнику помилок)
+            next(error);
+        }
+    }
+};
+exports.deleteMyAccountController = deleteMyAccountController;
 const updatePassword = async (req, res, next) => {
     const userId = req.user?.userID;
     const { oldPassword, newPassword } = req.body;

@@ -18,13 +18,15 @@ import {
   updateUserAvatar,              // Для оновлення аватара
   getUserByUID,                     // Для пошуку за UID, якщо такий маршрут буде
   logoutUser,
-  getLatestUsersController
+  getLatestUsersController,
+  deleteMyAccountController
 } from "../controllers/usersController"; // Переконайтесь, що всі ці контролери імпортовані
 
 import { 
   loginUser, 
   registrateUser, 
-  getCurrentUser, // Перейменовуємо, щоб уникнути конфлікту, якщо logoutUser є і в usersController
+  getCurrentUser,
+  adminResetUserPassword, // Перейменовуємо, щоб уникнути конфлікту, якщо logoutUser є і в usersController
 } from "../controllers/authController"; // Припускаємо, що logoutUser тепер тут або має бути тут
 
 import validateUser from "../middleware/validateUser";
@@ -47,12 +49,14 @@ router.put("/me/details", auth, updateMyDetailsController);
 router.get("/me/following", auth, getSelfFollowingController);
 router.get("/me/followers", auth, getSelfFollowersController);
 router.get("/me/saved-posts", auth, getMySavedPostsController);
+router.delete("/me", auth, deleteMyAccountController);
 router.put("/update-password", auth, updatePassword); // Оновлення власного пароля
-router.get("/latest", getLatestUsersController);
+router.get("/latest", auth ,getLatestUsersController);
 
 // --- Маршрути адміністрування (починаються з /admin/) ---
 router.get("/admin/details/:userId", auth, getUserDetailsForAdminController);
 router.put("/admin/update/:userId", auth, adminEditUserDetailsController);
+router.put("/admin/users/:userId/password-reset", auth, adminResetUserPassword);
 // router.put("/admin/change-role/:userId", auth, changeUserRole); // Можливо, краще так, ніж з тіла запиту
 
 // --- Загальні маршрути (мають йти після більш специфічних) ---

@@ -75,7 +75,7 @@
 }
 
 .dotSeparator { 
-  font-family: var(--namu-font-family); /* Елемент UI */
+  font-family: sans-serif; /* Елемент UI */
   color: var(--secondary-text-color); 
   margin: 0 2px; 
   font-size: 15px; 
@@ -83,7 +83,7 @@
 }
 
 .date { /* Дата - елемент UI */
-  font-family: var(--namu-font-family); 
+  font-family: sans-serif; 
   font-weight: 100;
   font-size: 15px;
   color: var(--secondary-text-color);
@@ -91,7 +91,7 @@
 }
 
 .moreOptionsButton { /* Кнопка - UI */
-  font-family: var(--namu-font-family);
+  font-family: sans-serif;
   background: none; 
   border: none;
   color: var(--secondary-text-color);
@@ -159,7 +159,7 @@
 }
 
 .actionButton { /* Кнопки дій - UI, включаючи текст лічильників */
-  font-family: var(--namu-font-family);
+  font-family: sans-serif;
   background: none; 
   border: none; 
   color: var(--secondary-text-color);
@@ -241,7 +241,7 @@
 }
 
 .commentSubmitButton { /* Кнопка "Надіслати" - UI */
-  font-family: var(--namu-font-family);
+  font-family: sans-serif;
   background-color: var(--accent-color);
   color: white;
   border: none;
@@ -358,7 +358,7 @@
   width: 100%;
   padding: 10px 15px;
   text-align: left;
-  font-family: var(--namu-font-family);
+  font-family: sans-serif;
   font-size: 15px;
   font-weight: 100;
   color: var(--primary-text-color);

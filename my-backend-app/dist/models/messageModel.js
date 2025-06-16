@@ -134,7 +134,6 @@ const deleteMessageFromDB = async (messageID, currentUserId) => {
         WHERE message_id = @messageID AND sender_id = @currentUserId; 
     `);
         if (result.rowsAffected[0] === 0) {
-            // Перевіряємо, чи існувало повідомлення, але не належало користувачу, чи його взагалі не було
             const checkRequest = pool.request().input('checkMessageID', mssql_1.default.Int, messageID);
             const checkResult = await checkRequest.query('SELECT sender_id FROM messages WHERE message_id = @checkMessageID');
             if (checkResult.recordset.length === 0) {
@@ -211,7 +210,6 @@ const updateMessageInDB = async (messageID, currentUserId, newText, newMessageFi
         await transaction.begin();
         transactionBegun = true;
         const request = transaction.request().input("messageID", mssql_1.default.Int, messageID);
-        // 1. Перевірити, чи існує повідомлення і чи належить воно користувачу
         const checkResult = await request.query(`SELECT sender_id, message_file_content_url FROM messages WHERE message_id = @messageID`);
         if (checkResult.recordset.length === 0) {
             throw new Error("Message not found");
@@ -221,14 +219,12 @@ const updateMessageInDB = async (messageID, currentUserId, newText, newMessageFi
             throw new Error("Forbidden: You can only edit your own messages.");
         }
         oldFilename = checkResult.recordset[0].message_file_content_url;
-        // 2. Формуємо запит на оновлення
         const updateFields = [];
         const updateRequest = transaction.request().input("messageIdForUpdate", mssql_1.default.Int, messageID);
         if (newText !== undefined) {
             updateFields.push("message = @newText");
             updateRequest.input("newText", mssql_1.default.NVarChar, newText);
         }
-        // Якщо newMessageFilename передано (рядок або null), оновлюємо message_file_content_url
         if (newMessageFilename !== undefined) {
             updateFields.push("message_file_content_url = @newMessageFilename");
             updateRequest.input("newMessageFilename", mssql_1.default.NVarChar, newMessageFilename); // newMessageFilename може бути null

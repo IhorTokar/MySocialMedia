@@ -1,6 +1,5 @@
-// my-app/src/components/Pages/Profile/MyPosts/Post/Post.jsx
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
-import s from './Post.module.css'; // Переконуємося, що стилі імпортуються як 's'
+import s from './Post.module.css';
 import {
     FaHeart, FaRegHeart, FaComment,
     FaShare, FaEllipsisH, FaBookmark, FaRegBookmark,
@@ -31,7 +30,7 @@ function Post({
     image,
     date,
     likeCount,
-    commentsCount: initialCommentsCount,
+    commentsCount: initialCommentsCount, // Використовуємо початкову кількість коментарів
     sharesCount,
     isLikedByCurrentUser: initialIsLiked,
     isSavedByCurrentUser: initialIsSaved,
@@ -74,7 +73,7 @@ function Post({
     contentImgURL: image, 
     createdAt: date,
     likesCount: likeCount, 
-    commentsCount: initialCommentsCount,
+    commentsCount: initialCommentsCount, // Зберігаємо початкову кількість коментарів
     sharesCount, 
     isLikedByCurrentUser: initialIsLiked, 
     isSavedByCurrentUser: initialIsSaved
@@ -87,9 +86,8 @@ function Post({
         'button', 'a', 'textarea', 'input',
         s.commentFormAvatar ? `.${s.commentFormAvatar}` : null,
         s.postMenuWrapper ? `.${s.postMenuWrapper}` : null,
-        // Якщо .replyForm та .commentActions визначені в цьому ж файлі стилів (Post.module.css):
-        s.replyForm ? `.${s.replyForm}` : null,         // (ймовірно, це клас з CommentItem.module.css)
-        s.commentActions ? `.${s.commentActions}` : null // (ймовірно, це клас з CommentItem.module.css)
+        s.replyForm ? `.${s.replyForm}` : null,
+        s.commentActions ? `.${s.commentActions}` : null
     ].filter(Boolean).join(', ');
 
     if (interactiveSelector && e.target.closest(interactiveSelector)) {
@@ -101,7 +99,7 @@ function Post({
     } else {
         console.error("Post.jsx: Неможливо відкрити пост в модалці перегляду, postId не визначено.");
     }
-  }, [dispatch, postId, currentPostData, isInsideModal, s]); // Додано 's' як залежність
+  }, [dispatch, postId, currentPostData, isInsideModal, s]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -116,7 +114,7 @@ function Post({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isPostMenuOpen, postId, s.moreOptionsButton]); // Додано 's.moreOptionsButton' як залежність, якщо клас динамічний (малоймовірно, можна прибрати, якщо 's' статичний)
+  }, [isPostMenuOpen, postId, s.moreOptionsButton]);
 
   useEffect(() => {
     if (showComments && postId && commentsStatus === 'idle' && allCommentsForThisPost.length === 0) {
@@ -207,7 +205,7 @@ function Post({
 
   const handleAddComment = async (e) => {
     e.preventDefault();
-    const parentIdForNewComment = replyTo ? replyTo.commentId : null; // Визначаємо тут для логування
+    const parentIdForNewComment = replyTo ? replyTo.commentId : null;
     if (!newCommentText.trim() || !postId || !loggedInUserId) {
         console.warn(`[Post.jsx] Cannot add comment: empty text ('${newCommentText}'), no postId (${postId}), or not logged in (${loggedInUserId}). ParentID for this attempt: ${parentIdForNewComment}`);
         return;
@@ -229,7 +227,6 @@ function Post({
             alert("Текст відповіді не може бути порожнім після видалення @імені.");
             return;
         }
-        // Для коментарів верхнього рівня (parentIdForNewComment === null) порожній текст також не дозволяємо
         alert("Коментар не може бути порожнім.");
         return;
     }
@@ -248,16 +245,18 @@ function Post({
 
   const handleShare = useCallback(() => {
     const postUrl = `${window.location.origin}/posts/${postId}`;
-    navigator.clipboard.writeText(postUrl)
-      .then(() => alert('Посилання на пост скопійовано!'))
-      .catch(err => console.error('Не вдалося скопіювати посилання: ', err));
+    document.execCommand('copy', false, postUrl); // Використовуємо document.execCommand для сумісності з iframe
+    alert('Посилання на пост скопійовано!');
   }, [postId]);
 
   const currentPostLikeError = useMemo(() => (likeError?.postId === postId ? likeError.message : null), [likeError, postId]);
   const currentPostSaveError = useMemo(() => (saveActionError?.postId === postId ? saveActionError.message : null), [saveActionError, postId]);
   const currentPostDeleteError = useMemo(() => (deletePostError?.postId === postId ? deletePostError.message : null), [deletePostError, postId]);
 
-  const dynamicCommentsCount = allCommentsForThisPost.length;
+  // Змінено: використовуємо initialCommentsCount для відображення загальної кількості коментарів
+  // dynamicCommentsCount тепер просто відображає кількість завантажених коментарів,
+  // але для кнопки використовуємо загальну кількість
+  const displayCommentsCount = initialCommentsCount; 
 
   if (postId === undefined) {
     return <div className={s.postCard} style={{color: 'var(--error-text-color)'}}>Помилка: ID поста не визначено.</div>;
@@ -324,14 +323,15 @@ function Post({
           {currentPostData.isLikedByCurrentUser ? <FaHeart style={{ color: '#F91880' }}/> : <FaRegHeart />}
           <span>{currentPostData.likesCount > 0 ? currentPostData.likesCount : ''}</span>
         </button>
-        <button className={s.actionButton} onClick={(e) => {e.stopPropagation(); handleToggleComments();}} aria-label={`Коментар, ${dynamicCommentsCount}`}>
-          <FaComment /> <span>{dynamicCommentsCount > 0 ? dynamicCommentsCount : ''}</span>
+        <button className={s.actionButton} onClick={(e) => {e.stopPropagation(); handleToggleComments();}} aria-label={`Коментар, ${displayCommentsCount}`}>
+          <FaComment /> <span>{displayCommentsCount > 0 ? displayCommentsCount : ''}</span>
         </button>
-        <button className={s.actionButton} onClick={(e) => {e.stopPropagation(); handleShare();}} aria-label={`Поділитися, ${currentPostData.sharesCount}`}>
-          <FaShare /> <span>{currentPostData.sharesCount > 0 ? currentPostData.sharesCount : ''}</span>
+        <button className={s.actionButton} onClick={(e) => {e.stopPropagation(); handleShare();}} aria-label={`Поділитися`}>
+          <FaShare /> {/* Кількість поширень тепер відображається біля кнопки "Зберегти" */}
         </button>
-        <button className={`${s.actionButton} ${currentPostData.isSavedByCurrentUser ? s.saved : ''}`} onClick={(e) => {e.stopPropagation(); handleSaveToggle();}} aria-label="Зберегти" disabled={saveActionStatus === 'loading' && (saveActionError?.postId === postId || !saveActionError)}>
+        <button className={`${s.actionButton} ${currentPostData.isSavedByCurrentUser ? s.saved : ''}`} onClick={(e) => {e.stopPropagation(); handleSaveToggle();}} aria-label={`Зберегти, ${currentPostData.sharesCount}`} disabled={saveActionStatus === 'loading' && (saveActionError?.postId === postId || !saveActionError)}>
           {currentPostData.isSavedByCurrentUser ? <FaBookmark style={{ color: 'var(--accent-color)' }} /> : <FaRegBookmark />}
+          <span>{currentPostData.sharesCount > 0 ? currentPostData.sharesCount : ''}</span>
         </button>
       </div>
 

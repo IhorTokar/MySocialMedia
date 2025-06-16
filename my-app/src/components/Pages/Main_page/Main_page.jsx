@@ -56,11 +56,6 @@ const MainPage = () => {
   const currentUserId = currentUser?.user_id;
   const currentUserAvatar = currentUser?.user_avatar_url;
 
-  const storiesData = [
-    { id: 1, userAvatar: "/default_avatar.jpg", userName: "User1_Story", hasActiveStory: true },
-    { id: 2, userAvatar: "/default_avatar.jpg", userName: "User2_Story", hasActiveStory: true },
-    { id: 3, userAvatar: "/default_avatar.jpg", userName: "User3_Story", hasActiveStory: false },
-  ];
 
   const observer = useRef();
   const lastPostElementRef = useCallback(node => {

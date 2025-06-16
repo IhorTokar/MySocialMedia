@@ -1,19 +1,12 @@
 // my-app/src/components/Header/Header.jsx
 
 import React, { useState, useRef, useEffect } from "react";
-
 import styles from "./Header.module.css";
-
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-
 import { logoutUser } from "../../redux/AuthSlice";
-
 import { clearUserProfile } from "../../redux/userSlice";
-
 import { useNavigate } from "react-router-dom";
-
 import { avatarImgUrl } from "../../utils/ImagesLoadUtil";
-
 import {
   fetchNotifications,
   markNotificationAsRead,
@@ -22,50 +15,33 @@ import {
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-
   const [searchQuery, setSearchQuery] = useState("");
-
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
-
   const menuRef = useRef(null);
-
   const notificationsRef = useRef(null);
-
   const dispatch = useAppDispatch();
-
   const navigate = useNavigate();
-
   const { profile } = useAppSelector((state) => state.user);
-
   const isAuthenticated = !!useAppSelector((state) => state.auth.token);
-
   // Отримуємо дані сповіщень з Redux
 
   const {
     items: notificationsList,
-
     unreadCount,
-
     status: notificationsStatus,
-
     error: notificationsError,
   } = useAppSelector((state) => state.notifications);
 
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
-
     if (isNotificationsOpen) setIsNotificationsOpen(false);
   };
 
   const toggleNotifications = () => {
     const opening = !isNotificationsOpen;
-
     setIsNotificationsOpen(opening);
-
     if (menuOpen) setMenuOpen(false);
-
     // Завантажуємо сповіщення, якщо відкриваємо і вони ще не завантажені (або не в процесі)
-
     if (opening && notificationsStatus === "idle") {
       dispatch(fetchNotifications());
     }
@@ -75,9 +51,7 @@ const Header = () => {
     if (!notification.read) {
       dispatch(markNotificationAsRead(notification.id));
     }
-
     setIsNotificationsOpen(false); // Закриваємо список після кліку
-
     if (notification.link) {
       navigate(notification.link);
     }
@@ -88,28 +62,20 @@ const Header = () => {
 
     if (logoutUser.fulfilled.match(resultAction)) {
       dispatch(clearUserProfile());
-
       dispatch(clearNotificationsState()); // Очищаємо сповіщення при виході
-
       navigate("/login");
     } else {
       console.error("Logout failed:", resultAction.payload);
-
       dispatch(clearUserProfile());
-
       dispatch(clearNotificationsState());
-
       localStorage.removeItem("authToken");
-
       navigate("/login");
     }
-
     setMenuOpen(false);
   };
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-
     if (searchQuery.trim()) {
       navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
     }
@@ -124,9 +90,7 @@ const Header = () => {
       ) {
         setMenuOpen(false);
       }
-
       // Перевіряємо, чи клік був не по іконці сповіщень перед закриттям
-
       if (
         notificationsRef.current &&
         !notificationsRef.current.contains(event.target) &&

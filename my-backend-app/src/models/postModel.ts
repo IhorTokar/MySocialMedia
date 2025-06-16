@@ -715,8 +715,6 @@ export const getSavedPostsForUserFromDB = async (
   }
 };
 
-
-
 export const getFollowingPostsFeedFromDB = async (
   currentAuthUserId: number,
   limit: number = 10,

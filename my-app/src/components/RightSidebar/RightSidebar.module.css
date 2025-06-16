@@ -6,24 +6,26 @@
   font-family: sans-serif;
   height: 100%;
   padding-top: 10px;
-  background-color: var(--primary-background-color); /* Загальний фон для правої колонки */
+  background-color: var(
+    --primary-background-color
+  ); /* Загальний фон для правої колонки */
 }
 
 .searchSection {
   position: sticky;
   top: 0;
-  background-color: var(--primary-background-color); 
+  background-color: var(--primary-background-color);
   z-index: 5;
-  padding-bottom: 10px; 
-  padding-top: 5px; 
-  margin-top: -10px; 
+  padding-bottom: 10px;
+  padding-top: 5px;
+  margin-top: -10px;
 }
 .searchInputWrapper {
   display: flex;
   align-items: center;
-  background-color: var(--input-background-color); 
-  border-radius: 25px; 
-  padding: 0 15px; 
+  background-color: var(--input-background-color);
+  border-radius: 25px;
+  padding: 0 15px;
   height: 42px;
   border: 1px solid var(--input-border-color);
 }
@@ -32,82 +34,214 @@
   background-color: var(--secondary-background-color);
   box-shadow: 0 0 0 2px var(--theme-button-active-shadow);
 }
-.searchIcon { width: 18px; height: 18px; margin-right: 12px; opacity: 0.6; color: var(--secondary-text-color); }
-.searchInput {
-  border: none; outline: none; background: transparent; flex-grow: 1;
-  font-family: sans-serif; font-weight: 100; 
-  font-size: 15px; color: var(--primary-text-color);
+.searchIcon {
+  width: 18px;
+  height: 18px;
+  margin-right: 12px;
+  opacity: 0.6;
+  color: var(--secondary-text-color);
 }
-.searchInput::placeholder { color: var(--input-placeholder-color); font-weight: 100; }
+.searchInput {
+  border: none;
+  outline: none;
+  background: transparent;
+  flex-grow: 1;
+  font-family: sans-serif;
+  font-weight: 100;
+  font-size: 15px;
+  color: var(--primary-text-color);
+}
+.searchInput::placeholder {
+  color: var(--input-placeholder-color);
+  font-weight: 100;
+}
 
 .infoCard {
-  background: var(--secondary-background-color); 
-  border-radius: 16px; 
+  background: var(--secondary-background-color);
+  border-radius: 16px;
   padding: 16px;
   border: 1px solid var(--card-border-color);
 }
 .cardTitle {
-  font-family: var(--namu-font-family, 'NAMU', sans-serif); font-weight: 800;
-  font-size: 20px; line-height: 1.2; color: var(--primary-text-color); 
+  font-family: sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--primary-text-color);
   margin: 0 0 15px 0;
 }
-.itemList { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 15px; }
-
-.activityItem, .recommendationItem { display: flex; align-items: flex-start; gap: 10px; }
-.recommendationItem { align-items: center; }
-.itemAvatarSmall { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; flex-shrink: 0; margin-top: 2px; background-color: var(--input-background-color); }
-.itemAvatarLarge { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background-color: var(--input-background-color); }
-.itemContent { display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
-.itemHeader { display: flex; align-items: baseline; gap: 4px; font-size: 14px; flex-wrap: wrap; margin-bottom: 2px; }
-.itemName { font-weight: 800; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.itemHandle { color: var(--secondary-text-color); font-weight: 100; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; }
-.itemTime, .topicCategory, .topicPosts, .itemRole { color: var(--secondary-text-color); font-size: 13px; font-weight: 100; white-space: nowrap; }
-.itemAction { font-size: 15px; color: var(--primary-text-color); font-weight: 100; line-height: 1.4; margin-top: 2px; word-break: break-word; }
-
-.topicItem { display: flex; justify-content: space-between; align-items: flex-start; padding: 5px 0; }
-.topicName { font-weight: 800; font-size: 16px; color: var(--primary-text-color); margin: 2px 0; }
-.moreTopicButton {
-  background: none; border: none; color: var(--secondary-text-color);
-  cursor: pointer; padding: 5px; border-radius: 50%; flex-shrink: 0;
+.itemList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
-.moreTopicButton:hover { background-color: var(--theme-button-hover-bg); color: var(--accent-color); }
-.moreIconSmall { width: 18px; height: 18px; }
+
+.activityItem,
+.recommendationItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.recommendationItem {
+  align-items: center;
+}
+.itemAvatarSmall {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  margin-top: 2px;
+  background-color: var(--input-background-color);
+}
+.itemAvatarLarge {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background-color: var(--input-background-color);
+}
+.itemContent {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
+}
+.itemHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 2px;
+}
+.itemName {
+  font-weight: 800;
+  color: var(--primary-text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.itemHandle {
+  color: var(--secondary-text-color);
+  font-weight: 100;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+}
+.itemTime,
+.topicCategory,
+.topicPosts,
+.itemRole {
+  color: var(--secondary-text-color);
+  font-size: 13px;
+  font-weight: 100;
+  white-space: nowrap;
+}
+.itemAction {
+  font-size: 15px;
+  color: var(--primary-text-color);
+  font-weight: 100;
+  line-height: 1.4;
+  margin-top: 2px;
+  word-break: break-word;
+}
+
+.topicItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 5px 0;
+}
+.topicName {
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--primary-text-color);
+  margin: 2px 0;
+}
+.moreTopicButton {
+  background: none;
+  border: none;
+  color: var(--secondary-text-color);
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.moreTopicButton:hover {
+  background-color: var(--theme-button-hover-bg);
+  color: var(--accent-color);
+}
+.moreIconSmall {
+  width: 18px;
+  height: 18px;
+}
 
 .showMoreButton {
-  background: none; border: none; color: var(--accent-color);
-  font-family: var(--namu-font-family, 'NAMU', sans-serif); font-weight: 100;
-  font-size: 15px; padding: 12px 0 0 0; cursor: pointer; margin-top: 12px;
-  width: 100%; text-align: left;
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  font-family: sans-serif;
+  font-weight: 100;
+  font-size: 15px;
+  padding: 12px 0 0 0;
+  cursor: pointer;
+  margin-top: 12px;
+  width: 100%;
+  text-align: left;
 }
-.showMoreButton:hover { text-decoration: underline; }
+.showMoreButton:hover {
+  text-decoration: underline;
+}
 
 .followButton {
-  background-color: var(--button-primary-bg); 
+  background-color: var(--button-primary-bg);
   color: var(--button-primary-text);
-  border: none; border-radius: 25px; padding: 6px 16px;
-  font-family: var(--namu-font-family, 'NAMU', sans-serif); font-weight: 800;
-  font-size: 14px; cursor: pointer; transition: background-color 0.2s ease;
-  white-space: nowrap; margin-left: auto; flex-shrink: 0;
+  border: none;
+  border-radius: 25px;
+  padding: 6px 16px;
+  font-family: sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+  margin-left: auto;
+  flex-shrink: 0;
 }
-.followButton:hover { background-color: var(--button-primary-hover-bg); }
+.followButton:hover {
+  background-color: var(--button-primary-hover-bg);
+}
 .followButton.unfollowButtonActive {
   background-color: var(--secondary-background-color);
   color: var(--primary-text-color);
   border: 1px solid var(--card-border-color);
 }
 .followButton.unfollowButtonActive:hover {
-  background-color: rgba(249, 24, 128, 0.1); 
+  background-color: rgba(249, 24, 128, 0.1);
   border: 1px solid rgba(249, 24, 128, 0.5);
-  color: #F91880; /* Залишаємо специфічний колір для unfollow hover */
+  color: #f91880; /* Залишаємо специфічний колір для unfollow hover */
 }
 
-.loadingMessage, .errorMessage, .emptyListMessage {
-  padding: 10px 0; text-align: center; color: var(--secondary-text-color);
-  font-size: 14px; font-weight: 100;
+.loadingMessage,
+.errorMessage,
+.emptyListMessage {
+  padding: 10px 0;
+  text-align: center;
+  color: var(--secondary-text-color);
+  font-size: 14px;
+  font-weight: 100;
 }
 .errorMessage {
   color: var(--error-text-color);
   background-color: var(--error-bg-color); /* Додамо фон для помилок */
   border: 1px solid var(--error-border-color); /* І рамку */
-  border-radius: 6px; padding: 8px 12px; margin: 5px 0;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin: 5px 0;
 }

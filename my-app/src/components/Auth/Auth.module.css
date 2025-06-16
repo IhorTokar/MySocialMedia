@@ -137,4 +137,25 @@
 }
 .loginLink:hover, .registerLink:hover { text-decoration: underline; }
 
+.phoneInputContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.phonePrefix {
+  padding: 10px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-right: none;
+  border-radius: 5px 0 0 5px;
+  color: #555;
+  font-size: 1rem;
+}
+
+.phoneInput {
+  border-radius: 0 5px 5px 0 !important; /* !important для перевизначення існуючих стилів */
+  flex-grow: 1; /* Поле вводу заповнить решту простору */
+}
+
 @media (max-width: 480px) { /* ... (адаптивність без змін кольорів) ... */ }

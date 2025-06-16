@@ -248,7 +248,7 @@ const addPost = async (req, res, next) => {
         res.status(401).json({ error: "Unauthorized for addPost" });
         return;
     }
-    if ((!content || String(content).trim() === "") && !contentImgFilename) {
+    if ((!content || String(content).trim() === "" || !title) && !contentImgFilename) {
         if (req.file?.path) {
             try {
                 await promises_1.default.unlink(req.file.path);

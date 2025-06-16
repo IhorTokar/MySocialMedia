@@ -320,7 +320,7 @@ const addUserToDB = async (
   email: string,
   passwordHash: string, // Змінено назву параметра для ясності
   phone: string = "",
-  profilePictureUrl: string = "",
+  profilePictureUrl: string = " ",
   userAvatar: string = "default_avatar.png",
   date_of_birth?: string // Зроблено необов'язковим, якщо може бути NULL у БД
 ): Promise<{ userId: number; message: string }> => {
@@ -333,6 +333,7 @@ const addUserToDB = async (
     // Створюємо запит В МЕЖАХ транзакції
     const request = transaction.request();
 
+    console.log("DEBUG: Значення user_Avatar, що передається в БД:", userAvatar);
     // Додаємо користувача в `users`
     const result =
       await // Додайте .input('uid', sql.NVarChar, generateSomeUid()) якщо uid генерується тут
@@ -383,37 +384,72 @@ const addUserToDB = async (
 
 // Видалення користувача
 const deleteUserFromDB = async (userId: number): Promise<void> => {
-  // Додано тип повернення
   const pool = await connectDB();
-  // Використовуємо транзакцію для безпечного видалення з обох таблиць
-  const transaction = pool.transaction();
+  const transaction = pool.transaction(); // Початок транзакції
+
   try {
-    await transaction.begin();
+    await transaction.begin(); // Починаємо транзакцію
+
     const request = transaction.request().input("userId", sql.Int, userId);
 
-    // Спочатку видаляємо з залежної таблиці (user_private)
+    // --- КРОКИ ВИДАЛЕННЯ ПОВ'ЯЗАНИХ ДАНИХ (ПЕРЕД ОСНОВНИМИ ТАБЛИЦЯМИ) ---
+    // 1. Видалення повідомлень, де користувач є відправником або отримувачем
+    await request.query(`
+      DELETE FROM messages
+      WHERE sender_id = @userId OR recipient_id = @userId;
+    `);
+
+    // 2. Видалення записів про підписки/підписників
+    // Припустимо, у вас є таблиця follows (followers, following)
+    // ALTER TABLE follows ADD CONSTRAINT FK_Follows_Follower FOREIGN KEY (follower_id) REFERENCES users(user_id) ON DELETE CASCADE;
+    // ALTER TABLE follows ADD CONSTRAINT FK_Follows_Following FOREIGN KEY (following_id) REFERENCES users(user_id) ON DELETE CASCADE;
+    // Якщо ви не використовуєте CASCADE, видаляємо вручну:
+    await request.query(`
+      DELETE FROM follows -- Замініть на назву вашої таблиці підписок
+      WHERE follower_id = @userId OR following_id = @userId;
+    `);
+
+    // 3. Видалення постів, коментарів, лайків тощо
+    // Якщо posts.user_id посилається на users.user_id:
+    await request.query(`
+      DELETE FROM posts -- Замініть на назву вашої таблиці постів
+      WHERE user_id = @userId;
+    `);
+    // Якщо коментарі пов'язані з user_id:
+    await request.query(`
+      DELETE FROM comments -- Замініть на назву вашої таблиці коментарів
+      WHERE user_id = @userId;
+    `);
+    // Якщо лайки пов'язані з user_id:
+    await request.query(`
+      DELETE FROM likes -- Замініть на назву вашої таблиці лайків
+      WHERE user_id = @userId;
+    `);
+    // ... і так для всіх інших таблиць, які мають зовнішні ключі, що посилаються на users.user_id
+
+    // 4. Видалення з залежної таблиці (user_private)
+    // Цей запит вже був у вас
     await request.query(`DELETE FROM user_private WHERE user_id = @userId`);
-    // Потім видаляємо з основної таблиці (users)
+
+    // 5. Видалення з основної таблиці (users)
+    // Цей запит вже був у вас
     const userResult = await request.query(
       `DELETE FROM users WHERE user_id = @userId`
     );
 
+    // Завершуємо транзакцію, якщо всі операції були успішними
     await transaction.commit();
 
-    // Перевіряємо, чи був користувач видалений з основної таблиці
     if (userResult.rowsAffected[0] === 0) {
-      // Якщо користувача не було знайдено, можливо, варто кинути помилку ще до коміту,
-      // але поточна логіка припускає, що запит до user_private міг нічого не видалити, якщо користувача вже не було.
-      // Якщо rowsAffected[0] === 0, значить такого user_id не було в таблиці users.
       console.warn(`Attempted to delete non-existent user with ID: ${userId}`);
-      throw new Error("⚠ User not found"); // Кидаємо помилку, якщо користувача не знайдено
+      throw new Error("⚠ User not found");
     }
   } catch (error) {
-    await transaction.rollback(); // Робимо відкат при будь-якій помилці
+    // Відкочуємо транзакцію при будь-якій помилці
+    await transaction.rollback(); 
     console.error("❌ Error deleting user:", error);
-    // Перекидаємо помилку, щоб контролер міг її обробити
     if (error instanceof Error && error.message.includes("User not found")) {
-      throw error; // Перекидаємо помилку "User not found"
+      throw error;
     }
     throw new Error("Database error while deleting user");
   }
@@ -442,6 +478,30 @@ const getUserByEmailFromDB = async (
   } catch (error) {
     console.error("❌ Error fetching user by email:", error);
     throw new Error("Database query error");
+  }
+};
+
+export const getFullUserByID = async (
+  userId: number
+): Promise<(UserPublic & UserPrivate) | null> => {
+  try {
+    const pool = await connectDB();
+    const request = pool.request().input("userId", sql.Int, userId); // Використовуємо @userId
+
+    const result = await request.query(`
+      SELECT
+        u.user_id, u.username, u.display_name, u.uid, u.profile_picture_url, u.gender, u.user_avatar_url, u.about_me,
+        p.email, p.password_hash, p.phone, p.role, p.date_of_birth
+      FROM users AS u
+      INNER JOIN user_private AS p
+        ON u.user_id = p.user_id
+      WHERE u.user_id = @userId; -- Змінено умову на u.user_id
+    `);
+
+    return result.recordset.length > 0 ? result.recordset[0] as (UserPublic & UserPrivate) : null;
+  } catch (error) {
+    console.error(`❌ Error fetching full user by ID ${userId}:`, error);
+    throw new Error("Database query error for getFullUserByID");
   }
 };
 
@@ -1230,6 +1290,33 @@ const getLatestUsersFromDB = async (
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error("❌ Error fetching latest users (paginated):", errorMessage, error);
     throw new Error(`Database error while fetching latest users (paginated): ${errorMessage}`);
+  }
+};
+
+/**
+ * Оновлює пароль користувача (для використання адміністратором).
+ * @param userId - ID користувача, чий пароль потрібно змінити.
+ * @param newHashedPassword - Новий хешований пароль.
+ */
+export const updateUserPasswordAsAdmin = async (
+  userId: number,
+  newHashedPassword: string
+): Promise<void> => {
+  const pool = await connectDB();
+  try {
+    const request = pool.request();
+    await request
+      .input("userId", sql.Int, userId)
+      .input("newPasswordHash", sql.NVarChar, newHashedPassword)
+      .query(`
+        UPDATE user_private
+        SET password_hash = @newPasswordHash
+        WHERE user_id = @userId;
+      `);
+    console.log(`✅ Адміністратор оновив пароль для user_id: ${userId}`);
+  } catch (error) {
+    console.error(`❌ Помилка при оновленні пароля користувача ${userId} адміністратором:`, error);
+    throw new Error("Помилка бази даних при оновленні пароля користувача.");
   }
 };
 
