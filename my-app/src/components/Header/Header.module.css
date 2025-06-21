@@ -179,7 +179,7 @@
 }
 
 .dropdownMenu p { /* Текст пунктів меню - UI елемент */
-  font-family: var(--namu-font-family);
+  font-family: sans-serif;
   margin: 0; 
   font-size: 15px; 
   cursor: pointer;
@@ -224,7 +224,7 @@
 }
 
 .dropdownHeader h4 { /* Заголовок "Сповіщення" - UI */
-  font-family: var(--namu-font-family);
+  font-family: sans-serif;
   margin: 0;
   font-size: 18px;
   font-weight: 800;
@@ -282,7 +282,7 @@
 }
 
 .notificationTime { /* Час сповіщення - частина UI */
-  font-family: var(--namu-font-family);
+  font-family: sans-serif;
   font-size: 13px;
   color: var(--secondary-text-color);
   font-weight: 100;
@@ -314,7 +314,7 @@
   text-align: center;
 }
 .dropdownFooter button { /* Текст "Усі сповіщення" - UI */
-  font-family: var(--namu-font-family);
+  font-family: sans-serif;
   background: none;
   border: none;
   color: var(--accent-color);

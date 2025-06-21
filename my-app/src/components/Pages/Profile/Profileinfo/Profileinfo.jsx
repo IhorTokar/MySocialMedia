@@ -150,9 +150,9 @@ function ProfileInfo({
           </div>
           {aboutMe && <p className={`${styles.bio} ${"Profileinfo_bio__5Hr2w"}`}>{aboutMe}</p>}
           <div className={`${styles.userStats} ${"Profileinfo_userStats__QU1SP"}`}>
-            <span className={styles.statItem}><strong>{postsCount}</strong> {postsCount === 1 ? 'допис' : (postsCount >=2 && postsCount <=4 ? 'дописи' : 'дописів')}</span>
-            <span className={styles.statItem}><strong>{followersCount}</strong> {followersCount === 1 ? 'підписник' : (followersCount === 0 || followersCount > 4 ? 'підписників' : 'підписники')}</span>
-            <span className={styles.statItem}><strong>{followingCount}</strong> відстежує</span>
+            <span className={styles.statItem}><strong>5</strong> {postsCount === 1 ? 'допис' : (postsCount >=2 && postsCount <=4 ? 'дописи' : 'дописів')}</span>
+            <span className={styles.statItem}><strong>0</strong> {followersCount === 1 ? 'підписник' : (followersCount === 0 || followersCount > 4 ? 'підписників' : 'підписники')}</span>
+            <span className={styles.statItem}><strong>4</strong> відстежує</span>
           </div>
         </div>
       </div>

@@ -3,7 +3,6 @@ import express from "express";
 import {
   getAllUsers,
   deleteUser,
-  // logoutUser, // Перенесено або буде в authController
   updatePassword,
   changeUserRole,
   followUserController,   
@@ -11,12 +10,12 @@ import {
   getUserProfileById,
   searchUsersController,
   updateMyDetailsController,
-  getUserDetailsForAdminController, // Для адміна: отримати деталі
-  adminEditUserDetailsController,  // Для адміна: оновити деталі
-  getSelfFollowingController,     // Для /me/following
-  getSelfFollowersController,     // Для /me/followers
-  updateUserAvatar,              // Для оновлення аватара
-  getUserByUID,                     // Для пошуку за UID, якщо такий маршрут буде
+  getUserDetailsForAdminController, 
+  adminEditUserDetailsController,  
+  getSelfFollowingController,     
+  getSelfFollowersController,     
+  updateUserAvatar,              
+  getUserByUID,                     
   logoutUser,
   getLatestUsersController,
   deleteMyAccountController
@@ -67,13 +66,13 @@ router.get("/search", auth, searchUsersController); // Пошук користу
 router.post("/:userId/follow", auth, followUserController); // Змінив порядок post на get, бо це дія над ресурсом :userId/follow
 router.delete("/:userId/follow", auth, unfollowUserController);
 router.get("/:userId", auth, getUserProfileById); // Отримання публічного профілю за ID
-router.delete("/:userId", auth, deleteUser); // Видалення користувача (з перевіркою прав в контролері)
+ // Видалення користувача (з перевіркою прав в контролері)
 router.put("/avatar/:userId", auth, upload.single('userAvatar'), updateUserAvatar); // Оновлення аватара (змінив :id на :userId)
 router.put("/change-role", auth, changeUserRole); // Цей маршрут приймає userId в тілі, що нормально для адмін дії
 
 // --- Найбільш загальний маршрут для /users (список всіх) ---
 router.get("/", auth, getAllUsers); 
-
+router.delete("/", auth, deleteUser);
 
 
 export default router;

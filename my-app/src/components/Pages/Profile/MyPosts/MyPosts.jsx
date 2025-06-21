@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import mypostStyles from "./Mypost.module.css"; // Використовуємо інший аліас для стилів MyPosts
 import Post from "./Post/Post"; // Імпорт Post вже є вище
+import { FaTimes } from "react-icons/fa";
 
 // Компонент для відображення списку постів та форми створення
 function MyPosts({ posts, status, error, addPost, canCreatePosts }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [contentImg, setContentImg] = useState(null); // Стан для обраного файлу
+  const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
+  const fileInputRef = useRef(null);
 
-  // Обробник відправки форми
   const handleSubmit = () => {
-    // Перевіряємо, чи передана функція addPost і чи заповнені поля
     if (addPost && title.trim() && content.trim()) {
-      addPost(title, content, contentImg); // Викликаємо функцію з контейнера
+      addPost(title, content, contentImg); 
       // Очищаємо поля форми
       setTitle("");
       setContent("");
@@ -27,12 +28,35 @@ function MyPosts({ posts, status, error, addPost, canCreatePosts }) {
 
   // Обробник вибору файлу
   const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setContentImg(e.target.files[0]);
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) { // Приклад обмеження в 5MB
+        alert("Файл занадто великий. Максимальний розмір 5MB.");
+        // Очищаємо інпут та стан
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        setContentImg(null);
+        setImagePreviewUrl(null);
+        return;
+      }
+      setContentImg(file); // Встановлюємо вибраний файл у стан
+      // Створюємо URL для попереднього перегляду
+      setImagePreviewUrl(URL.createObjectURL(file));
     } else {
       setContentImg(null);
+      setImagePreviewUrl(null);
     }
   };
+
+  // НОВА ФУНКЦІЯ: для видалення вибраного зображення
+  const removeSelectedImage = () => {
+    setContentImg(null);
+    setImagePreviewUrl(null);
+    // Очищаємо значення інпуту файлу, щоб можна було вибрати той самий файл знову
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
 
   return (
     // Використовуємо стилі з Mypost.module.css
@@ -57,6 +81,19 @@ function MyPosts({ posts, status, error, addPost, canCreatePosts }) {
             rows="4"
             className={mypostStyles.textarea} // Використовуємо стилі з Mypost.module.css
           />
+          {imagePreviewUrl && (
+            <div className={mypostStyles.imagePreviewContainer}>
+              <img src={imagePreviewUrl} alt="Попередній перегляд" className={mypostStyles.imagePreview} />
+              <button 
+                type="button" 
+                onClick={removeSelectedImage} 
+                className={mypostStyles.removeImageButton}
+                aria-label="Видалити зображення"
+              >
+                <FaTimes /> {/* Іконка "X" для видалення */}
+              </button>
+            </div>
+          )}
           <input
             id="post-file-input" // ID для очищення поля
             type="file"
@@ -64,6 +101,7 @@ function MyPosts({ posts, status, error, addPost, canCreatePosts }) {
             onChange={handleFileChange} // Використовуємо обробник
             className={mypostStyles.fileInput} // Додаємо клас для стилізації, якщо потрібно
             style={{ marginBottom: "12px" }}
+            ref = {fileInputRef}
           />
           {/* Кнопка блокується під час завантаження (якщо статус передається) */}
           <button

@@ -265,7 +265,7 @@ const getPrivateUserDataByUserId = async (userId) => {
         const pool = await (0, db_1.connectDB)();
         const request = pool.request().input("userId", mssql_1.default.Int, userId);
         const result = await request.query(`
-      SELECT user_id, email, password_hash, phone, role, date_ofBirht -- Перевірте назву поля date_ofBirht у БД
+      SELECT user_id, email, password_hash, phone, role, date_of_birth -- Перевірте назву поля date_ofBirht у БД
       FROM user_private
       WHERE user_id = @userId
     `);
@@ -346,7 +346,7 @@ const deleteUserFromDB = async (userId) => {
         // 1. Видалення повідомлень, де користувач є відправником або отримувачем
         await request.query(`
       DELETE FROM messages
-      WHERE sender_id = @userId OR recipient_id = @userId;
+      WHERE sender_id = @userId OR receiver_id = @userId;
     `);
         // 2. Видалення записів про підписки/підписників
         // Припустимо, у вас є таблиця follows (followers, following)
@@ -354,23 +354,27 @@ const deleteUserFromDB = async (userId) => {
         // ALTER TABLE follows ADD CONSTRAINT FK_Follows_Following FOREIGN KEY (following_id) REFERENCES users(user_id) ON DELETE CASCADE;
         // Якщо ви не використовуєте CASCADE, видаляємо вручну:
         await request.query(`
-      DELETE FROM follows -- Замініть на назву вашої таблиці підписок
+      DELETE FROM followers 
       WHERE follower_id = @userId OR following_id = @userId;
     `);
         // 3. Видалення постів, коментарів, лайків тощо
         // Якщо posts.user_id посилається на users.user_id:
         await request.query(`
-      DELETE FROM posts -- Замініть на назву вашої таблиці постів
+      DELETE FROM posts 
       WHERE user_id = @userId;
     `);
         // Якщо коментарі пов'язані з user_id:
         await request.query(`
-      DELETE FROM comments -- Замініть на назву вашої таблиці коментарів
+      DELETE FROM comments 
       WHERE user_id = @userId;
     `);
         // Якщо лайки пов'язані з user_id:
         await request.query(`
-      DELETE FROM likes -- Замініть на назву вашої таблиці лайків
+      DELETE FROM post_likes 
+      WHERE user_id = @userId;
+    `);
+        await request.query(`
+      DELETE FROM saved_posts 
       WHERE user_id = @userId;
     `);
         // ... і так для всіх інших таблиць, які мають зовнішні ключі, що посилаються на users.user_id

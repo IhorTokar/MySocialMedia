@@ -37,9 +37,10 @@ router.get("/search", auth_1.default, usersController_1.searchUsersController); 
 router.post("/:userId/follow", auth_1.default, usersController_1.followUserController); // Змінив порядок post на get, бо це дія над ресурсом :userId/follow
 router.delete("/:userId/follow", auth_1.default, usersController_1.unfollowUserController);
 router.get("/:userId", auth_1.default, usersController_1.getUserProfileById); // Отримання публічного профілю за ID
-router.delete("/:userId", auth_1.default, usersController_1.deleteUser); // Видалення користувача (з перевіркою прав в контролері)
+// Видалення користувача (з перевіркою прав в контролері)
 router.put("/avatar/:userId", auth_1.default, fileUpload_1.default.single('userAvatar'), usersController_1.updateUserAvatar); // Оновлення аватара (змінив :id на :userId)
 router.put("/change-role", auth_1.default, usersController_1.changeUserRole); // Цей маршрут приймає userId в тілі, що нормально для адмін дії
 // --- Найбільш загальний маршрут для /users (список всіх) ---
 router.get("/", auth_1.default, usersController_1.getAllUsers);
+router.delete("/", auth_1.default, usersController_1.deleteUser);
 exports.default = router;

@@ -173,19 +173,23 @@ export const adminUpdateUserRole = createAsyncThunk(
 
 export const adminDeleteUser = createAsyncThunk(
   'user/adminDeleteUser',
-  async (userIdToDelete, { getState, rejectWithValue }) => {
+  async (userId, { getState, rejectWithValue }) => {
     const timestamp = new Date().toISOString();
-    console.log(`[userSlice][${timestamp}] Спроба adminDeleteUser для userId: ${userIdToDelete}`);
+    console.log(`[userSlice][${timestamp}] Спроба adminDeleteUser для userId: ${userId}`);
     try {
       const token = getState().auth.token;
       if (!token) {
         return rejectWithValue('Користувач не авторизований');
       }
-      await axios.delete(`${API_BASE_URL}/users/${userIdToDelete}`, {
+      await axios.delete(`${API_BASE_URL}/users`, {
+        data: { user_id: userId }, // <--- ОСЬ ТАК ТРЕБА ПЕРЕДАВАТИ ДАНІ В ТІЛІ DELETE-ЗАПИТУ
         withCredentials: true,
+        headers: {
+            'Authorization': `Bearer ${token}` // Забезпечте, що токен надсилається, якщо не через cookies
+        }
       });
-      console.log(`[userSlice][${timestamp}] adminDeleteUser УСПІШНО для userId: ${userIdToDelete}`);
-      return { userIdToDelete };
+      console.log(`[userSlice][${timestamp}] adminDeleteUser УСПІШНО для userId: ${userId}`);
+      return { userId };
     } catch (error) {
       let errorMessage = 'Не вдалося видалити користувача';
       if (error.response && error.response.data) {
@@ -194,7 +198,7 @@ export const adminDeleteUser = createAsyncThunk(
         errorMessage = error.message;
       }
       console.error(`[userSlice][${timestamp}] adminDeleteUser НЕ ВДАЛОСЯ. Помилка:`, errorMessage);
-      return rejectWithValue({ message: errorMessage, userIdToDelete });
+      return rejectWithValue({ message: errorMessage, userId });
     }
   }
 );

@@ -120,3 +120,61 @@
     font-size: 16px;
     font-weight: 100;
 }
+
+.imagePreviewContainer {
+  position: relative;
+  width: 100%; /* Займає всю доступну ширину */
+  max-width: 550px; /* <--- Збільшено максимальну ширину для більшого розміру */
+  /* Ви можете налаштувати це значення відповідно до максимальної ширини ваших постів */
+  margin: 15px auto; /* Центрує та додає вертикальні відступи */
+  border: 1px solid var(--input-border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: var(--card-shadow);
+}
+
+/* Саме зображення попереднього перегляду */
+.imagePreview {
+  max-width: 100%; /* Гарантує, що зображення не вийде за межі контейнера */
+  height: auto; /* Зберігає співвідношення сторін */
+  display: block;
+}
+
+
+/* Button to remove the image preview */
+.removeImageButton {
+  position: absolute;
+  top: 8px; /* Distance from top edge */
+  right: 8px; /* Distance from right edge */
+  background-color: rgba(220, 53, 69, 0.8); /* Red color with transparency */
+  color: white;
+  border: none;
+  border-radius: 50%; /* Makes it a circle */
+  width: 32px; /* Size of the button */
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1.1rem; /* Icon size */
+  transition: background-color 0.2s ease;
+  z-index: 10; /* Ensures it's on top of the image */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Slight shadow for visibility */
+}
+
+.removeImageButton:hover {
+  background-color: var(--error-text-color); /* Solid red on hover, or pick from your vars */
+}
+
+/* Adjust file input for better spacing if needed */
+.fileInput {
+  /* You already have this, just ensure it's here */
+  font-family: sans-serif;
+  font-size: 14px;
+  color: var(--secondary-text-color);
+  margin-bottom: 15px; /* Keep consistent spacing */
+  display: block; /* Ensures it takes its own line */
+}

@@ -123,9 +123,10 @@ exports.getUserDetailsForAdminController = getUserDetailsForAdminController;
 // ========================================================================
 const deleteUser = async (req, res, next) => {
     const userIdFromToken = req.user?.userID;
-    const userIdToDelete = parseInt(req.params.id, 10);
+    const { user_id } = req.body;
+    const userIdToDelete = parseInt(user_id, 10);
     const userMakingRequestRole = req.user?.role;
-    if (isNaN(userIdToDelete)) {
+    if (isNaN(user_id)) {
         /* ... */ return;
     }
     if (userIdFromToken !== userIdToDelete && userMakingRequestRole !== "admin") {
